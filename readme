@@ -1,0 +1,8 @@
+rubriques.csv
+→ Quand une rubrique doit-elle apparaître ?
+
+controles.csv
+→ Que faut-il contrôler pour cette rubrique ?
+
+dependances.csv
+→ Quelles réponses peut-on proposer à l'utilisateur ?

@@ -56,145 +56,20 @@ const categories = [
 
 
 // --------------------------------------------------
-// 2. DÉPENDANCES ENTRE OPTIONS
+// 2. DONNÉES CHARGÉES DEPUIS LES CSV
 // --------------------------------------------------
 
-// Une option sans dépendance est toujours affichée.
-//
-// Une dépendance "any" signifie qu'au moins
-// une des conditions doit être vraie.
-
-const dependencies = {
-
-    insc_PLVH: {
-        any: [
-            "UGB_bovins",
-            "UGB_équidés"
-        ]
-    },
-
-    insc_SST: {
-        any: [
-            "UGB_bovins",
-            "UGB_équidés",
-            "UGB_caprins",
-            "UGB_ovins",
-            "UGB_porcins",
-            "UGB_volailles",
-            "UGB_lapins"
-        ]
-    }
-};
+let rubriques = [];
+let controles = [];
+let dependencies = {};
 
 
 // --------------------------------------------------
-// 3. RUBRIQUES DE CONTRÔLE
-// --------------------------------------------------
-
-const rubriques = [
-
-    {
-        id: "07.01_2023",
-        label: "PER Généralités",
-
-        conditions: {
-            saison: ["été"],
-
-            cultures: [
-                "herbages",
-                "cultures_pérennes",
-                "vigne",
-                "terres_assolées",
-                "baies"
-            ]
-        },
-
-        controles: [
-            "Carnet présent",
-            "Bilan fumure"
-        ]
-    },
-
-    {
-        id: "07.06_2021",
-        label: "PER Grandes cultures et culture maraîchère : rotation des cultures",
-
-        conditions: {
-            saison: ["été"],
-            cultures: ["terres_assolées"]
-        },
-
-        controles: [
-            "Carnet présent",
-            "Journal des traitements",
-            "Visite des parcelles"
-        ]
-    },
-
-    {
-        id: "07.09_2021",
-        label: "PER Arboriculture",
-
-        conditions: {
-            saison: ["été"],
-            cultures: ["cultures_pérennes"]
-        },
-
-        controles: [
-            "Carnet présent",
-            "Journal des traitements",
-            "Visite des parcelles"
-        ]
-    },
-
-    {
-        id: "07.11_2021",
-        label: "PER Viticulture",
-
-        conditions: {
-            saison: ["été"],
-            cultures: ["vigne"]
-        },
-
-        controles: [
-            "Journal des traitements",
-            "Visite des parcelles"
-        ]
-    },
-
-    {
-        id: "12.01_2023",
-        label: "SST - Bovins et buffles d'Asie",
-
-        conditions: {
-            betail: ["UGB_bovins"]
-        },
-
-        controles: [
-            "Visite des écuries"
-        ]
-    },
-
-    {
-        id: "12.02_2021",
-        label: "SST - Équidés",
-
-        conditions: {
-            betail: ["UGB_équidés"]
-        },
-
-        controles: [
-            "Visite des écuries"
-        ]
-    }
-];
-
-
-// --------------------------------------------------
-// 4. ÉTAT DE L'APPLICATION
+// 3. ÉTAT DE L'APPLICATION
 // --------------------------------------------------
 
 let currentStep = 0;
+let showingResults = false;
 
 const answers = {};
 
@@ -204,7 +79,7 @@ categories.forEach(category => {
 
 
 // --------------------------------------------------
-// 5. ÉLÉMENTS HTML
+// 4. ÉLÉMENTS HTML
 // --------------------------------------------------
 
 const questionnaire = document.getElementById("questionnaire");
@@ -214,7 +89,195 @@ const progressBar = document.getElementById("progressBar");
 
 
 // --------------------------------------------------
-// 6. TEST DES DÉPENDANCES
+// 5. LECTURE D'UN CSV
+// --------------------------------------------------
+
+function parseCSV(text) {
+
+    const lines = text
+        .trim()
+        .split(/\r?\n/)
+        .filter(line => line.trim() !== "");
+
+    const headers = lines[0]
+        .split(";")
+        .map(header => header.trim());
+
+    return lines.slice(1).map(line => {
+
+        const values = line.split(";");
+
+        const row = {};
+
+        headers.forEach((header, index) => {
+            row[header] = (values[index] ?? "").trim();
+        });
+
+        return row;
+    });
+}
+
+
+// --------------------------------------------------
+// 6. CHARGEMENT DES 3 FICHIERS CSV
+// --------------------------------------------------
+
+async function loadData() {
+
+    const [
+        rubriquesResponse,
+        controlesResponse,
+        dependancesResponse
+    ] = await Promise.all([
+        fetch("./data/rubriques.csv"),
+        fetch("./data/controles.csv"),
+        fetch("./data/dependances.csv")
+    ]);
+
+    if (!rubriquesResponse.ok) {
+        throw new Error("Impossible de charger rubriques.csv");
+    }
+
+    if (!controlesResponse.ok) {
+        throw new Error("Impossible de charger controles.csv");
+    }
+
+    if (!dependancesResponse.ok) {
+        throw new Error("Impossible de charger dependances.csv");
+    }
+
+    const rubriquesText = await rubriquesResponse.text();
+    const controlesText = await controlesResponse.text();
+    const dependancesText = await dependancesResponse.text();
+
+
+    // --------------------------------------------------
+    // RUBRIQUES
+    //
+    // Exemple CSV :
+    //
+    // 07.06;...;saison;été
+    // 07.06;...;cultures;terres_assolées
+    // 07.06;...;cultures;baies
+    //
+    // devient :
+    //
+    // saison = été
+    // ET
+    // cultures = terres_assolées OU baies
+    // --------------------------------------------------
+
+    const rubriquesRows = parseCSV(rubriquesText);
+
+    const rubriquesMap = {};
+
+    rubriquesRows.forEach(row => {
+
+        if (!rubriquesMap[row.id]) {
+
+            rubriquesMap[row.id] = {
+                id: row.id,
+                label: row.label,
+                conditions: {}
+            };
+        }
+
+        if (!rubriquesMap[row.id].conditions[row.groupe]) {
+
+            rubriquesMap[row.id]
+                .conditions[row.groupe] = [];
+        }
+
+        rubriquesMap[row.id]
+            .conditions[row.groupe]
+            .push(row.condition);
+    });
+
+    rubriques = Object.values(rubriquesMap);
+
+
+    // --------------------------------------------------
+    // CONTRÔLES
+    // --------------------------------------------------
+
+    controles = parseCSV(controlesText);
+
+
+    // --------------------------------------------------
+    // DÉPENDANCES
+    //
+    // Plusieurs lignes pour une même option = OU
+    // --------------------------------------------------
+
+    const dependancesRows = parseCSV(dependancesText);
+
+    dependencies = {};
+
+    dependancesRows.forEach(row => {
+
+        if (!dependencies[row.option]) {
+
+            dependencies[row.option] = {
+                any: []
+            };
+        }
+
+        dependencies[row.option]
+            .any
+            .push(row.condition);
+    });
+}
+
+
+// --------------------------------------------------
+// 7. RÉCUPÉRER TOUTES LES OPTIONS COCHÉES
+// --------------------------------------------------
+
+function getAllSelected() {
+
+    return Object.values(answers).flat();
+}
+
+
+// --------------------------------------------------
+// 8. CALCULER LES CATÉGORIES À AFFICHER
+// --------------------------------------------------
+//
+// Particularité métier :
+//
+// si saison = hiver
+// on ne montre pas l'étape "cultures"
+// --------------------------------------------------
+
+function getVisibleCategories() {
+
+    const hiver =
+        answers.saison.includes("hiver");
+
+    // Si on passe en hiver,
+    // on supprime d'éventuelles anciennes réponses
+    // de cultures.
+
+    if (hiver) {
+        answers.cultures = [];
+    }
+
+    return categories.filter(category => {
+
+        if (
+            category.id === "cultures" &&
+            hiver
+        ) {
+            return false;
+        }
+
+        return true;
+    });
+}
+
+
+// --------------------------------------------------
+// 9. VÉRIFIER SI UNE OPTION EST DISPONIBLE
 // --------------------------------------------------
 
 function isOptionAvailable(optionId) {
@@ -225,25 +288,56 @@ function isOptionAvailable(optionId) {
         return true;
     }
 
-    const allSelected = Object.values(answers).flat();
+    const allSelected = getAllSelected();
 
-    if (dependency.any) {
-        return dependency.any.some(
-            condition => allSelected.includes(condition)
-        );
-    }
-
-    return true;
+    return dependency.any.some(
+        condition =>
+            allSelected.includes(condition)
+    );
 }
 
 
 // --------------------------------------------------
-// 7. AFFICHAGE D'UNE ÉTAPE
+// 10. NETTOYER LES RÉPONSES DEVENUES INCOMPATIBLES
+// --------------------------------------------------
+
+function removeUnavailableAnswers() {
+
+    categories.forEach(category => {
+
+        answers[category.id] =
+            answers[category.id].filter(
+                optionId =>
+                    isOptionAvailable(optionId)
+            );
+    });
+}
+
+
+// --------------------------------------------------
+// 11. AFFICHAGE D'UNE ÉTAPE
 // --------------------------------------------------
 
 function renderStep() {
 
-    const category = categories[currentStep];
+    showingResults = false;
+
+    removeUnavailableAnswers();
+
+    const visibleCategories =
+        getVisibleCategories();
+
+    // Sécurité : si le nombre d'étapes a diminué,
+    // on évite d'avoir un index hors limites.
+
+    if (currentStep >= visibleCategories.length) {
+        currentStep = visibleCategories.length - 1;
+    }
+
+    nextButton.style.display = "block";
+
+    const category =
+        visibleCategories[currentStep];
 
     questionnaire.innerHTML = `
         <h2>${category.titre}</h2>
@@ -274,28 +368,41 @@ function renderStep() {
     });
 
     const checkboxes =
-        questionnaire.querySelectorAll("input[type=checkbox]");
+        questionnaire.querySelectorAll(
+            "input[type=checkbox]"
+        );
 
     checkboxes.forEach(checkbox => {
 
-        checkbox.addEventListener("change", event => {
+        checkbox.addEventListener(
+            "change",
+            event => {
 
-            const option = event.target.value;
+                const option =
+                    event.target.value;
 
-            if (event.target.checked) {
+                if (event.target.checked) {
 
-                if (!answers[category.id].includes(option)) {
-                    answers[category.id].push(option);
+                    if (
+                        !answers[category.id]
+                            .includes(option)
+                    ) {
+
+                        answers[category.id]
+                            .push(option);
+                    }
+
+                } else {
+
+                    answers[category.id] =
+                        answers[category.id]
+                            .filter(
+                                value =>
+                                    value !== option
+                            );
                 }
-
-            } else {
-
-                answers[category.id] =
-                    answers[category.id].filter(
-                        value => value !== option
-                    );
             }
-        });
+        );
     });
 
     previousButton.style.visibility =
@@ -304,58 +411,104 @@ function renderStep() {
             : "visible";
 
     nextButton.textContent =
-        currentStep === categories.length - 1
+        currentStep ===
+        visibleCategories.length - 1
             ? "Voir le résultat"
             : "Suivant";
 
     const progress =
-        ((currentStep + 1) / categories.length) * 100;
+        ((currentStep + 1)
+            / visibleCategories.length)
+        * 100;
 
-    progressBar.style.width = progress + "%";
+    progressBar.style.width =
+        progress + "%";
 }
 
 
 // --------------------------------------------------
-// 8. DÉTERMINER SI UNE RUBRIQUE S'APPLIQUE
+// 12. VÉRIFIER SI UNE RUBRIQUE EST APPLICABLE
+// --------------------------------------------------
+//
+// ENTRE LES GROUPES = ET
+// DANS UN GROUPE = OU
+//
+// Exemple :
+//
+// saison : été
+// ET
+// cultures : terres_assolées OU baies
 // --------------------------------------------------
 
 function rubriqueApplicable(rubrique) {
 
-    for (const [category, requiredValues]
-        of Object.entries(rubrique.conditions)) {
+    const allSelected = getAllSelected();
 
-        const selectedValues = answers[category];
+    const groupes =
+        Object.values(rubrique.conditions);
 
-        const match = requiredValues.some(
-            value => selectedValues.includes(value)
-        );
+    return groupes.every(
+        conditionsDuGroupe => {
 
-        if (!match) {
-            return false;
+            return conditionsDuGroupe.some(
+                condition =>
+                    allSelected.includes(condition)
+            );
         }
-    }
-
-    return true;
+    );
 }
 
 
 // --------------------------------------------------
-// 9. AFFICHAGE DU RÉSULTAT
+// 13. RÉCUPÉRER LES CONTRÔLES D'UNE RUBRIQUE
+// --------------------------------------------------
+
+function getControles(rubriqueId) {
+
+    return controles
+        .filter(
+            row =>
+                row.rubrique === rubriqueId
+        )
+        .map(
+            row =>
+                row.controle
+        );
+}
+
+
+// --------------------------------------------------
+// 14. AFFICHAGE DES RÉSULTATS
 // --------------------------------------------------
 
 function showResults() {
 
-    const results =
-        rubriques.filter(rubriqueApplicable);
+    showingResults = true;
 
-    progressBar.style.width = "100%";
+    removeUnavailableAnswers();
+    getVisibleCategories();
+
+    previousButton.style.visibility =
+        "visible";
+
+    nextButton.style.display =
+        "none";
+
+    const results =
+        rubriques.filter(
+            rubriqueApplicable
+        );
+
+    progressBar.style.width =
+        "100%";
 
     questionnaire.innerHTML = `
         <h2>Rubriques applicables</h2>
 
         <p>
-            ${results.length} rubrique(s)
-            correspondent à votre exploitation.
+            ${results.length}
+            rubrique(s) correspondent
+            à votre exploitation.
         </p>
     `;
 
@@ -373,9 +526,18 @@ function showResults() {
 
     results.forEach(rubrique => {
 
-        const controles = rubrique.controles
-            .map(controle => `<li>${controle}</li>`)
-            .join("");
+        const listeControles =
+            getControles(rubrique.id);
+
+        const controlesHTML =
+            listeControles.length > 0
+                ? listeControles
+                    .map(
+                        controle =>
+                            `<li>${controle}</li>`
+                    )
+                    .join("")
+                : "<li>Aucun contrôle défini</li>";
 
         questionnaire.innerHTML += `
             <div class="result">
@@ -391,48 +553,125 @@ function showResults() {
                 </strong>
 
                 <ul class="control-list">
-                    ${controles}
+                    ${controlesHTML}
                 </ul>
 
             </div>
         `;
     });
-
-    previousButton.style.visibility = "hidden";
-    nextButton.style.display = "none";
 }
 
 
 // --------------------------------------------------
-// 10. NAVIGATION
+// 15. BOUTON SUIVANT
 // --------------------------------------------------
 
-nextButton.addEventListener("click", () => {
+nextButton.addEventListener(
+    "click",
+    () => {
 
-    if (currentStep < categories.length - 1) {
+        const visibleCategories =
+            getVisibleCategories();
 
-        currentStep++;
+        if (
+            currentStep
+            < visibleCategories.length - 1
+        ) {
+
+            currentStep++;
+
+            renderStep();
+
+        } else {
+
+            showResults();
+        }
+    }
+);
+
+
+// --------------------------------------------------
+// 16. BOUTON PRÉCÉDENT
+// --------------------------------------------------
+
+previousButton.addEventListener(
+    "click",
+    () => {
+
+        // Depuis la page des résultats,
+        // retour à la dernière étape visible.
+
+        if (showingResults) {
+
+            showingResults = false;
+
+            const visibleCategories =
+                getVisibleCategories();
+
+            currentStep =
+                visibleCategories.length - 1;
+
+            renderStep();
+
+            return;
+        }
+
+        // Retour normal.
+
+        if (currentStep > 0) {
+
+            currentStep--;
+
+            renderStep();
+        }
+    }
+);
+
+
+// --------------------------------------------------
+// 17. DÉMARRAGE
+// --------------------------------------------------
+
+async function startApp() {
+
+    questionnaire.innerHTML =
+        "<p>Chargement des données...</p>";
+
+    nextButton.style.display =
+        "none";
+
+    previousButton.style.visibility =
+        "hidden";
+
+    try {
+
+        await loadData();
+
         renderStep();
 
-    } else {
+    } catch (error) {
 
-        showResults();
+        console.error(error);
+
+        questionnaire.innerHTML = `
+            <h2>Erreur</h2>
+
+            <p>
+                Impossible de charger
+                les fichiers de données.
+            </p>
+
+            <p>
+                Vérifiez que les fichiers suivants existent :
+            </p>
+
+            <ul>
+                <li>data/rubriques.csv</li>
+                <li>data/controles.csv</li>
+                <li>data/dependances.csv</li>
+            </ul>
+        `;
     }
-});
+}
 
-
-previousButton.addEventListener("click", () => {
-
-    if (currentStep > 0) {
-
-        currentStep--;
-        renderStep();
-    }
-});
-
-
-// --------------------------------------------------
-// 11. DÉMARRAGE
-// --------------------------------------------------
-
-renderStep();
+startApp();

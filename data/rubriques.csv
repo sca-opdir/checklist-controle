@@ -1,0 +1,16 @@
+id;label;groupe;condition
+07.01_2023;PER Généralités;saison;été
+07.01_2023;PER Généralités;cultures;herbages
+07.01_2023;PER Généralités;cultures;cultures_pérennes
+07.01_2023;PER Généralités;cultures;vigne
+07.01_2023;PER Généralités;cultures;terres_assolées
+07.01_2023;PER Généralités;cultures;baies
+07.06_2021;PER Grandes cultures et culture maraîchère : rotation des cultures;saison;été
+07.06_2021;PER Grandes cultures et culture maraîchère : rotation des cultures;cultures;terres_assolées
+07.06_2021;PER Grandes cultures et culture maraîchère : rotation des cultures;cultures;baies
+07.09_2021;PER Arboriculture;saison;été
+07.09_2021;PER Arboriculture;cultures;cultures_pérennes
+07.11_2021;PER Viticulture;saison;été
+07.11_2021;PER Viticulture;cultures;vigne
+12.01_2023;SST - Bovins et buffles d'Asie;betail;UGB_bovins
+12.02_2021;SST - Équidés;betail;UGB_équidés

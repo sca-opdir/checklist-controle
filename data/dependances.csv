@@ -1,0 +1,12 @@
+option;condition
+insc_PLVH;UGB_bovins
+insc_PLVH;UGB_équidés
+insc_SST;UGB_bovins
+insc_SST;UGB_équidés
+insc_SST;UGB_caprins
+insc_SST;UGB_ovins
+insc_SST;UGB_porcins
+insc_SST;UGB_volailles
+insc_SST;UGB_lapins
+insc_MAP;terres_assolées
+SPB_herbages;herbages
