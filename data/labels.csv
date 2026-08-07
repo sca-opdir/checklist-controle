@@ -1,0 +1,19 @@
+id;label;groupe
+été;Été;saison
+hiver;Hiver;saison
+herbages;Herbages;cultures
+cultures_pérennes;Cultures pérennes;cultures
+vigne;Vigne;cultures
+terres_assolées;Terres assolées;cultures
+baies;Baies;cultures
+UGB_bovins;Bovins;betail
+UGB_équidés;Équidés;betail
+UGB_caprins;Caprins;betail
+UGB_ovins;Ovins;betail
+UGB_porcins;Porcins;betail
+UGB_volailles;Volaille;betail
+UGB_lapins;Lapins;betail
+insc_PLVH;PLVH;inscriptions
+insc_SST;SST;inscriptions
+insc_SRPA;SRPA;inscriptions
+insc_MAP;MAP;inscriptions

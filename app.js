@@ -1,5 +1,10 @@
 // --------------------------------------------------
-// 1. QUESTIONS DU FORMULAIRE
+// 1. DÉFINITION DES ÉTAPES DU QUESTIONNAIRE
+// --------------------------------------------------
+//
+// Les options ne sont plus codées ici.
+// Elles seront récupérées automatiquement
+// depuis labels.csv grâce à la colonne "groupe".
 // --------------------------------------------------
 
 const categories = [
@@ -7,50 +12,28 @@ const categories = [
         id: "saison",
         titre: "Saison",
         question: "Quelle saison concerne le contrôle ?",
-        options: [
-            { id: "été", label: "Été" },
-            { id: "hiver", label: "Hiver" }
-        ]
+        selection: "single"
     },
 
     {
         id: "cultures",
         titre: "Cultures",
         question: "Quelles cultures sont présentes sur l'exploitation ?",
-        options: [
-            { id: "herbages", label: "Herbages" },
-            { id: "cultures_pérennes", label: "Cultures pérennes" },
-            { id: "vigne", label: "Vigne" },
-            { id: "terres_assolées", label: "Terres assolées" },
-            { id: "baies", label: "Baies" }
-        ]
+        selection: "multiple"
     },
 
     {
         id: "betail",
         titre: "Bétail",
         question: "Quels animaux sont présents sur l'exploitation ?",
-        options: [
-            { id: "UGB_bovins", label: "Bovins" },
-            { id: "UGB_équidés", label: "Équidés" },
-            { id: "UGB_caprins", label: "Caprins" },
-            { id: "UGB_ovins", label: "Ovins" },
-            { id: "UGB_porcins", label: "Porcins" },
-            { id: "UGB_volailles", label: "Volaille" },
-            { id: "UGB_lapins", label: "Lapins" }
-        ]
+        selection: "multiple"
     },
 
     {
         id: "inscriptions",
         titre: "Inscriptions",
         question: "À quels programmes l'exploitation est-elle inscrite ?",
-        options: [
-            { id: "insc_PLVH", label: "PLVH" },
-            { id: "insc_SST", label: "SST" },
-            { id: "insc_SRPA", label: "SRPA" },
-            { id: "insc_MAP", label: "MAP" }
-        ]
+        selection: "multiple"
     }
 ];
 
@@ -62,6 +45,7 @@ const categories = [
 let rubriques = [];
 let controles = [];
 let dependencies = {};
+let labels = {};
 
 
 // --------------------------------------------------
@@ -82,10 +66,17 @@ categories.forEach(category => {
 // 4. ÉLÉMENTS HTML
 // --------------------------------------------------
 
-const questionnaire = document.getElementById("questionnaire");
-const nextButton = document.getElementById("nextButton");
-const previousButton = document.getElementById("previousButton");
-const progressBar = document.getElementById("progressBar");
+const questionnaire =
+    document.getElementById("questionnaire");
+
+const nextButton =
+    document.getElementById("nextButton");
+
+const previousButton =
+    document.getElementById("previousButton");
+
+const progressBar =
+    document.getElementById("progressBar");
 
 
 // --------------------------------------------------
@@ -110,7 +101,9 @@ function parseCSV(text) {
         const row = {};
 
         headers.forEach((header, index) => {
-            row[header] = (values[index] ?? "").trim();
+
+            row[header] =
+                (values[index] ?? "").trim();
         });
 
         return row;
@@ -119,7 +112,7 @@ function parseCSV(text) {
 
 
 // --------------------------------------------------
-// 6. CHARGEMENT DES 3 FICHIERS CSV
+// 6. CHARGEMENT DES 4 FICHIERS CSV
 // --------------------------------------------------
 
 async function loadData() {
@@ -127,47 +120,108 @@ async function loadData() {
     const [
         rubriquesResponse,
         controlesResponse,
-        dependancesResponse
+        dependancesResponse,
+        labelsResponse
     ] = await Promise.all([
+
         fetch("./data/rubriques.csv"),
         fetch("./data/controles.csv"),
-        fetch("./data/dependances.csv")
+        fetch("./data/dependances.csv"),
+        fetch("./data/labels.csv")
     ]);
 
+
+    // --------------------------------------------------
+    // VÉRIFICATION DU CHARGEMENT
+    // --------------------------------------------------
+
     if (!rubriquesResponse.ok) {
-        throw new Error("Impossible de charger rubriques.csv");
+        throw new Error(
+            "Impossible de charger rubriques.csv"
+        );
     }
 
     if (!controlesResponse.ok) {
-        throw new Error("Impossible de charger controles.csv");
+        throw new Error(
+            "Impossible de charger controles.csv"
+        );
     }
 
     if (!dependancesResponse.ok) {
-        throw new Error("Impossible de charger dependances.csv");
+        throw new Error(
+            "Impossible de charger dependances.csv"
+        );
     }
 
-    const rubriquesText = await rubriquesResponse.text();
-    const controlesText = await controlesResponse.text();
-    const dependancesText = await dependancesResponse.text();
+    if (!labelsResponse.ok) {
+        throw new Error(
+            "Impossible de charger labels.csv"
+        );
+    }
+
+
+    // --------------------------------------------------
+    // LECTURE DES FICHIERS
+    // --------------------------------------------------
+
+    const rubriquesText =
+        await rubriquesResponse.text();
+
+    const controlesText =
+        await controlesResponse.text();
+
+    const dependancesText =
+        await dependancesResponse.text();
+
+    const labelsText =
+        await labelsResponse.text();
+
+
+    // --------------------------------------------------
+    // LABELS
+    //
+    // labels.csv :
+    //
+    // id;label;groupe
+    // été;Été;saison
+    // vigne;Vigne;cultures
+    // UGB_bovins;Bovins;betail
+    // insc_PLVH;PLVH;inscriptions
+    // --------------------------------------------------
+
+    const labelsRows =
+        parseCSV(labelsText);
+
+    labels = {};
+
+    labelsRows.forEach(row => {
+
+        labels[row.id] = {
+            id: row.id,
+            label: row.label,
+            groupe: row.groupe
+        };
+    });
 
 
     // --------------------------------------------------
     // RUBRIQUES
     //
-    // Exemple CSV :
+    // Exemple :
     //
     // 07.06;...;saison;été
     // 07.06;...;cultures;terres_assolées
     // 07.06;...;cultures;baies
     //
-    // devient :
+    // signifie :
     //
-    // saison = été
+    // été
     // ET
-    // cultures = terres_assolées OU baies
+    // (terres_assolées OU baies)
     // --------------------------------------------------
 
-    const rubriquesRows = parseCSV(rubriquesText);
+    const rubriquesRows =
+        parseCSV(rubriquesText);
 
     const rubriquesMap = {};
 
@@ -182,7 +236,10 @@ async function loadData() {
             };
         }
 
-        if (!rubriquesMap[row.id].conditions[row.groupe]) {
+        if (
+            !rubriquesMap[row.id]
+                .conditions[row.groupe]
+        ) {
 
             rubriquesMap[row.id]
                 .conditions[row.groupe] = [];
@@ -193,23 +250,35 @@ async function loadData() {
             .push(row.condition);
     });
 
-    rubriques = Object.values(rubriquesMap);
+    rubriques =
+        Object.values(rubriquesMap);
 
 
     // --------------------------------------------------
     // CONTRÔLES
     // --------------------------------------------------
 
-    controles = parseCSV(controlesText);
+    controles =
+        parseCSV(controlesText);
 
 
     // --------------------------------------------------
     // DÉPENDANCES
     //
     // Plusieurs lignes pour une même option = OU
+    //
+    // Exemple :
+    //
+    // insc_PLVH;UGB_bovins
+    // insc_PLVH;UGB_équidés
+    //
+    // signifie :
+    //
+    // UGB_bovins OU UGB_équidés
     // --------------------------------------------------
 
-    const dependancesRows = parseCSV(dependancesText);
+    const dependancesRows =
+        parseCSV(dependancesText);
 
     dependencies = {};
 
@@ -230,7 +299,49 @@ async function loadData() {
 
 
 // --------------------------------------------------
-// 7. RÉCUPÉRER TOUTES LES OPTIONS COCHÉES
+// 7. RÉCUPÉRER LE LABEL D'UN IDENTIFIANT
+// --------------------------------------------------
+
+function getLabel(id) {
+
+    return labels[id]?.label ?? id;
+}
+
+
+// --------------------------------------------------
+// 8. RÉCUPÉRER LES OPTIONS D'UN GROUPE
+// --------------------------------------------------
+//
+// Exemple :
+//
+// getOptionsForGroup("inscriptions")
+//
+// retourne automatiquement :
+//
+// insc_PLVH
+// insc_SST
+// insc_SRPA
+// insc_MAP
+//
+// selon labels.csv
+// --------------------------------------------------
+
+function getOptionsForGroup(groupId) {
+
+    return Object.values(labels)
+        .filter(
+            item =>
+                item.groupe === groupId
+        )
+        .map(
+            item =>
+                item.id
+        );
+}
+
+
+// --------------------------------------------------
+// 9. RÉCUPÉRER TOUTES LES OPTIONS SÉLECTIONNÉES
 // --------------------------------------------------
 
 function getAllSelected() {
@@ -240,13 +351,13 @@ function getAllSelected() {
 
 
 // --------------------------------------------------
-// 8. CALCULER LES CATÉGORIES À AFFICHER
+// 10. CALCULER LES CATÉGORIES À AFFICHER
 // --------------------------------------------------
 //
 // Particularité métier :
 //
-// si saison = hiver
-// on ne montre pas l'étape "cultures"
+// si saison = hiver,
+// l'étape "cultures" est masquée.
 // --------------------------------------------------
 
 function getVisibleCategories() {
@@ -254,13 +365,15 @@ function getVisibleCategories() {
     const hiver =
         answers.saison.includes("hiver");
 
-    // Si on passe en hiver,
-    // on supprime d'éventuelles anciennes réponses
-    // de cultures.
+
+    // Si l'utilisateur avait choisi des cultures
+    // puis revient en arrière et choisit hiver,
+    // les anciennes réponses sont effacées.
 
     if (hiver) {
         answers.cultures = [];
     }
+
 
     return categories.filter(category => {
 
@@ -268,6 +381,7 @@ function getVisibleCategories() {
             category.id === "cultures" &&
             hiver
         ) {
+
             return false;
         }
 
@@ -277,18 +391,28 @@ function getVisibleCategories() {
 
 
 // --------------------------------------------------
-// 9. VÉRIFIER SI UNE OPTION EST DISPONIBLE
+// 11. VÉRIFIER SI UNE OPTION EST DISPONIBLE
 // --------------------------------------------------
 
 function isOptionAvailable(optionId) {
 
-    const dependency = dependencies[optionId];
+    const dependency =
+        dependencies[optionId];
+
+
+    // Pas de dépendance :
+    // l'option est toujours disponible.
 
     if (!dependency) {
         return true;
     }
 
-    const allSelected = getAllSelected();
+
+    const allSelected =
+        getAllSelected();
+
+
+    // Une seule des conditions suffit.
 
     return dependency.any.some(
         condition =>
@@ -298,7 +422,7 @@ function isOptionAvailable(optionId) {
 
 
 // --------------------------------------------------
-// 10. NETTOYER LES RÉPONSES DEVENUES INCOMPATIBLES
+// 12. NETTOYER LES RÉPONSES DEVENUES INCOMPATIBLES
 // --------------------------------------------------
 
 function removeUnavailableAnswers() {
@@ -307,6 +431,7 @@ function removeUnavailableAnswers() {
 
         answers[category.id] =
             answers[category.id].filter(
+
                 optionId =>
                     isOptionAvailable(optionId)
             );
@@ -315,71 +440,139 @@ function removeUnavailableAnswers() {
 
 
 // --------------------------------------------------
-// 11. AFFICHAGE D'UNE ÉTAPE
+// 13. AFFICHAGE D'UNE ÉTAPE
 // --------------------------------------------------
 
 function renderStep() {
 
     showingResults = false;
 
+
     removeUnavailableAnswers();
+
 
     const visibleCategories =
         getVisibleCategories();
 
-    // Sécurité : si le nombre d'étapes a diminué,
-    // on évite d'avoir un index hors limites.
 
-    if (currentStep >= visibleCategories.length) {
-        currentStep = visibleCategories.length - 1;
+    // Sécurité si le nombre d'étapes visibles change.
+
+    if (
+        currentStep >=
+        visibleCategories.length
+    ) {
+
+        currentStep =
+            visibleCategories.length - 1;
     }
 
-    nextButton.style.display = "block";
+
+    nextButton.style.display =
+        "block";
+
 
     const category =
         visibleCategories[currentStep];
+
 
     questionnaire.innerHTML = `
         <h2>${category.titre}</h2>
         <p>${category.question}</p>
     `;
 
-    category.options.forEach(option => {
 
-        if (!isOptionAvailable(option.id)) {
+    // --------------------------------------------------
+    // OPTIONS DU GROUPE
+    // --------------------------------------------------
+
+    const options =
+        getOptionsForGroup(category.id);
+
+
+    options.forEach(optionId => {
+
+
+        // Ne pas afficher une option
+        // dont les dépendances ne sont pas remplies.
+
+        if (!isOptionAvailable(optionId)) {
             return;
         }
 
+
         const checked =
-            answers[category.id].includes(option.id)
+            answers[category.id]
+                .includes(optionId)
+
                 ? "checked"
                 : "";
 
+
+        // Saison = bouton radio
+        // autres groupes = cases à cocher
+
+        const inputType =
+            category.selection === "single"
+
+                ? "radio"
+                : "checkbox";
+
+
         questionnaire.innerHTML += `
             <label class="option">
+
                 <input
-                    type="checkbox"
-                    value="${option.id}"
+                    type="${inputType}"
+                    name="${category.id}"
+                    value="${optionId}"
                     ${checked}
                 >
-                ${option.label}
+
+                ${getLabel(optionId)}
+
             </label>
         `;
     });
 
-    const checkboxes =
-        questionnaire.querySelectorAll(
-            "input[type=checkbox]"
-        );
 
-    checkboxes.forEach(checkbox => {
+    // --------------------------------------------------
+    // GESTION DES CLICS
+    // --------------------------------------------------
 
-        checkbox.addEventListener(
+    const inputs =
+        questionnaire.querySelectorAll("input");
+
+
+    inputs.forEach(input => {
+
+        input.addEventListener(
             "change",
+
             event => {
 
                 const option =
                     event.target.value;
+
+
+                // --------------------------------------
+                // CHOIX UNIQUE
+                // --------------------------------------
+
+                if (
+                    category.selection ===
+                    "single"
+                ) {
+
+                    answers[category.id] =
+                        [option];
+
+                    return;
+                }
+
+
+                // --------------------------------------
+                // CHOIX MULTIPLE
+                // --------------------------------------
 
                 if (event.target.checked) {
 
@@ -397,6 +590,7 @@ function renderStep() {
                     answers[category.id] =
                         answers[category.id]
                             .filter(
+
                                 value =>
                                     value !== option
                             );
@@ -405,21 +599,42 @@ function renderStep() {
         );
     });
 
+
+    // --------------------------------------------------
+    // BOUTON PRÉCÉDENT
+    // --------------------------------------------------
+
     previousButton.style.visibility =
         currentStep === 0
+
             ? "hidden"
             : "visible";
+
+
+    // --------------------------------------------------
+    // BOUTON SUIVANT
+    // --------------------------------------------------
 
     nextButton.textContent =
         currentStep ===
         visibleCategories.length - 1
+
             ? "Voir le résultat"
             : "Suivant";
 
+
+    // --------------------------------------------------
+    // BARRE DE PROGRESSION
+    // --------------------------------------------------
+
     const progress =
-        ((currentStep + 1)
-            / visibleCategories.length)
+        (
+            (currentStep + 1)
+            /
+            visibleCategories.length
+        )
         * 100;
+
 
     progressBar.style.width =
         progress + "%";
@@ -427,32 +642,45 @@ function renderStep() {
 
 
 // --------------------------------------------------
-// 12. VÉRIFIER SI UNE RUBRIQUE EST APPLICABLE
+// 14. VÉRIFIER SI UNE RUBRIQUE EST APPLICABLE
 // --------------------------------------------------
 //
 // ENTRE LES GROUPES = ET
+//
 // DANS UN GROUPE = OU
 //
 // Exemple :
 //
 // saison : été
+//
 // ET
-// cultures : terres_assolées OU baies
+//
+// cultures :
+// terres_assolées OU baies
 // --------------------------------------------------
 
 function rubriqueApplicable(rubrique) {
 
-    const allSelected = getAllSelected();
+    const allSelected =
+        getAllSelected();
+
 
     const groupes =
-        Object.values(rubrique.conditions);
+        Object.values(
+            rubrique.conditions
+        );
+
 
     return groupes.every(
+
         conditionsDuGroupe => {
 
             return conditionsDuGroupe.some(
+
                 condition =>
-                    allSelected.includes(condition)
+                    allSelected.includes(
+                        condition
+                    )
             );
         }
     );
@@ -460,17 +688,21 @@ function rubriqueApplicable(rubrique) {
 
 
 // --------------------------------------------------
-// 13. RÉCUPÉRER LES CONTRÔLES D'UNE RUBRIQUE
+// 15. RÉCUPÉRER LES CONTRÔLES D'UNE RUBRIQUE
 // --------------------------------------------------
 
 function getControles(rubriqueId) {
 
     return controles
         .filter(
+
             row =>
-                row.rubrique === rubriqueId
+                row.rubrique ===
+                rubriqueId
         )
+
         .map(
+
             row =>
                 row.controle
         );
@@ -478,29 +710,36 @@ function getControles(rubriqueId) {
 
 
 // --------------------------------------------------
-// 14. AFFICHAGE DES RÉSULTATS
+// 16. AFFICHAGE DES RÉSULTATS
 // --------------------------------------------------
 
 function showResults() {
 
     showingResults = true;
 
+
     removeUnavailableAnswers();
+
     getVisibleCategories();
+
 
     previousButton.style.visibility =
         "visible";
 
+
     nextButton.style.display =
         "none";
+
 
     const results =
         rubriques.filter(
             rubriqueApplicable
         );
 
+
     progressBar.style.width =
         "100%";
+
 
     questionnaire.innerHTML = `
         <h2>Rubriques applicables</h2>
@@ -511,6 +750,11 @@ function showResults() {
             à votre exploitation.
         </p>
     `;
+
+
+    // --------------------------------------------------
+    // AUCUN RÉSULTAT
+    // --------------------------------------------------
 
     if (results.length === 0) {
 
@@ -524,20 +768,32 @@ function showResults() {
         return;
     }
 
+
+    // --------------------------------------------------
+    // AFFICHAGE DES RUBRIQUES
+    // --------------------------------------------------
+
     results.forEach(rubrique => {
 
+
         const listeControles =
-            getControles(rubrique.id);
+            getControles(
+                rubrique.id
+            );
+
 
         const controlesHTML =
             listeControles.length > 0
+
                 ? listeControles
                     .map(
                         controle =>
                             `<li>${controle}</li>`
                     )
                     .join("")
+
                 : "<li>Aucun contrôle défini</li>";
+
 
         questionnaire.innerHTML += `
             <div class="result">
@@ -563,19 +819,21 @@ function showResults() {
 
 
 // --------------------------------------------------
-// 15. BOUTON SUIVANT
+// 17. BOUTON SUIVANT
 // --------------------------------------------------
 
 nextButton.addEventListener(
     "click",
+
     () => {
 
         const visibleCategories =
             getVisibleCategories();
 
+
         if (
-            currentStep
-            < visibleCategories.length - 1
+            currentStep <
+            visibleCategories.length - 1
         ) {
 
             currentStep++;
@@ -591,32 +849,41 @@ nextButton.addEventListener(
 
 
 // --------------------------------------------------
-// 16. BOUTON PRÉCÉDENT
+// 18. BOUTON PRÉCÉDENT
 // --------------------------------------------------
 
 previousButton.addEventListener(
     "click",
+
     () => {
 
-        // Depuis la page des résultats,
-        // retour à la dernière étape visible.
+
+        // --------------------------------------------------
+        // RETOUR DEPUIS LES RÉSULTATS
+        // --------------------------------------------------
 
         if (showingResults) {
 
             showingResults = false;
 
+
             const visibleCategories =
                 getVisibleCategories();
 
+
             currentStep =
                 visibleCategories.length - 1;
+
 
             renderStep();
 
             return;
         }
 
-        // Retour normal.
+
+        // --------------------------------------------------
+        // RETOUR NORMAL
+        // --------------------------------------------------
 
         if (currentStep > 0) {
 
@@ -629,7 +896,7 @@ previousButton.addEventListener(
 
 
 // --------------------------------------------------
-// 17. DÉMARRAGE
+// 19. DÉMARRAGE DE L'APPLICATION
 // --------------------------------------------------
 
 async function startApp() {
@@ -637,11 +904,14 @@ async function startApp() {
     questionnaire.innerHTML =
         "<p>Chargement des données...</p>";
 
+
     nextButton.style.display =
         "none";
 
+
     previousButton.style.visibility =
         "hidden";
+
 
     try {
 
@@ -652,6 +922,7 @@ async function startApp() {
     } catch (error) {
 
         console.error(error);
+
 
         questionnaire.innerHTML = `
             <h2>Erreur</h2>
@@ -669,9 +940,15 @@ async function startApp() {
                 <li>data/rubriques.csv</li>
                 <li>data/controles.csv</li>
                 <li>data/dependances.csv</li>
+                <li>data/labels.csv</li>
             </ul>
         `;
     }
 }
+
+
+// --------------------------------------------------
+// 20. LANCEMENT
+// --------------------------------------------------
 
 startApp();
