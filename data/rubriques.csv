@@ -1,16 +1,366 @@
 id;label;groupe;condition
-07.01_2023;PER GÃ©nÃ©ralitÃ©s;saison;Ã©tÃ©
-07.01_2023;PER GÃ©nÃ©ralitÃ©s;cultures;herbages
-07.01_2023;PER GÃ©nÃ©ralitÃ©s;cultures;cultures_pÃ©rennes
-07.01_2023;PER GÃ©nÃ©ralitÃ©s;cultures;vigne
-07.01_2023;PER GÃ©nÃ©ralitÃ©s;cultures;terres_assolÃ©es
-07.01_2023;PER GÃ©nÃ©ralitÃ©s;cultures;baies
-07.06_2021;PER Grandes cultures et culture maraÃ®chÃ¨re : rotation des cultures;saison;Ã©tÃ©
-07.06_2021;PER Grandes cultures et culture maraÃ®chÃ¨re : rotation des cultures;cultures;terres_assolÃ©es
-07.06_2021;PER Grandes cultures et culture maraÃ®chÃ¨re : rotation des cultures;cultures;baies
-07.09_2021;PER Arboriculture;saison;Ã©tÃ©
-07.09_2021;PER Arboriculture;cultures;cultures_pÃ©rennes
-07.11_2021;PER Viticulture;saison;Ã©tÃ©
+01.1.A_2021;Hygiène production végétale - Exigences générales;saison;été
+01.1.B_2021;Hygiène production végétale - Produits phytosanitaires et biocides;saison;été
+03.30_v1;Prot.anim. - bovins, avec buffles et yacks;saison;été
+03.31_v1;Prot.anim. - équidés;saison;été
+03.32_v1;Prot.anim. - chèvres;saison;été
+03.33_v1;Prot.anim. - moutons;saison;été
+03.34_v1;Prot.anim. - porcs;saison;été
+03.35_v1;Prot.anim. - lapins;saison;été
+03.36_v1;Prot.anim - poules pondeuses;saison;été
+03.37_v1;Prot.anim. - volaille à l'engrais;saison;été
+03.38_v1;Prot.anim. - lamas et alpagas;saison;été
+03.41_v1;Prot.anim. - oies domestiques-canards;saison;été
+03.42_v1;Prot.anim. - cerfs;saison;été
+03.43_v1;Prot.anim. - Autruches;saison;été
+03.60_v1;Interventions entrainant des douleurs;saison;été
+07.01_2023;PER Généralités;saison;été
+07.02_2024;PER Documents / enregistrements;saison;été
+07.03_2025;PER Part appropriée de surface de promotion de la biodiversité;saison;été
+07.04_2021;PER Bordures tampon;saison;été
+07.06_2021;PER Grandes cultures et culture maraîchère / surface herbagère : rotation des cultures;saison;été
+07.07_2021;PER Grandes cultures et culture maraîchère : Protection du sol;saison;été
+07.08_2025;PER Grandes cultures et culture maraîchère / surface herbagère : protection phytosanitaire;saison;été
+07.09_2021;PER Arboriculture;saison;été
+07.10_2021;PER Baies;saison;été
+07.11_2021;PER Viticulture;saison;été
+07.12_2023;PER Généralités ferme & champ;saison;été
+07.13_2025;PER ruissellement et dérive;saison;été
+08.01_2021;QI A - Prairies extensives;saison;été
+08.02_2021;QI B - Prairies peu intensives;saison;été
+08.03_2021;QI C - Pâturages extensifs;saison;été
+08.04_2021;QI D - Pâturages boisés;saison;été
+08.05_2021;QI E - Surfaces à litière;saison;été
+08.06_2021;QI F - haies, bosquets champêtres et berges boisées;saison;été
+08.07_2021;QI G - prairies riveraines d'un cours d'eau d'un cours d'eau;saison;été
+08.08_2021;QI H - Jachères florales;saison;été
+08.09_2021;QI I - Jachères tournantes;saison;été
+08.10_2021;QI J - Bande culturale extensive;saison;été
+08.11_2021;QI K - Ourlet sur terres assolées;saison;été
+08.12_2021;QI L - Arbres fruitiers haute-tige;saison;été
+08.13_2021;QI M - Arbres isolés indigènes adaptés au site et allées d'arbres;saison;été
+08.14_2021;QI N - Surfaces viticoles présentant une biodiversité naturelle;saison;été
+08.15_2021;QI P - Surfaces de promotion de la biodiversité spécifiques à la région;saison;été
+08.26_2017;Sans contribution Q - Fossés humides, mares, étangs;saison;été
+08.27_2017;Sans contribution R - Surfaces rudérales, tas d'épierrage et affleurements rocheux;saison;été
+08.28_2017;Sans contribution S - Murs de pierres sèches;saison;été
+08.29_2017;Surfaces exclues des SPB;saison;été
+08.40_2023;Biodiversité fonctionnelle_bandes semées pour organismes utiles;saison;été
+09.01_2017;Généralités concernant l'agriculture biologique;saison;été
+09.02_2018;Production végétale bio;saison;été
+09.03_2017;Semences et plants bio;saison;été
+09.04_2017;Cultures spéciales bio;saison;été
+09.07_2017;Garde des animaux / Élevage bio: généralités;saison;été
+09.08_2017;Elevage bio - exigences spécifiques pour les porcs;saison;été
+09.09_2017;Elevage bio - exigences spécifiques pour la volaille;saison;été
+09.10_2017;Elevage bio ' exigences spécifiques pour les autres espèces animales;saison;été
+11.01_2021;Production de lait et de viande basée sur les herbages;saison;été
+12.04_2023;SST-Porcins;saison;été
+12.05_2023;SST-Lapins;saison;été
+12.06_2021;SST-Volaille de rente;saison;été
+12.20_2026;SRPA Bovins, buffles d'Asie, yaks;saison;été
+12.21_2025;SRPA Equidés;saison;été
+12.22_2025;SRPA Caprins;saison;été
+12.23_2025;SRPA Ovins;saison;été
+12.24_2025;SRPA Porcins;saison;été
+12.25_2025;SRPA Volaille de rente;saison;été
+12.26_2025;SRPA Animaux sauvages;saison;été
+12.30_2023;Contribution à la mise au pâturage;saison;été
+12.31_2023;Contribution à la mise au pâturage_part de mise au pâturage;saison;été
+16.01_2023;Non-recours aux PPh dans les grandes cultures;saison;été
+16.02_2023;Non-recours aux PPh dans les cultures maraîchères et les cultures de petits fruits;saison;été
+16.03_2023;Non-recours aux insecticides, acaricides et fongicides après la floraison dans les cultures pérennes;saison;été
+16.04_2023;Exploitation des cultures pérennes à l'aide d'intrants conformes à l'agriculture biologique;saison;été
+16.05_2023;Non-recours aux herbicides dans les grandes cultures et les cultures spéciales;saison;été
+18.01_2023;Couverture appropriée du sol;saison;été
+18.02_2024;Techniques culturales préservant le sol;saison;été
+19.01_2023;Utilisation efficiente de l'azote dans les grandes cultures;saison;été
+20.01_2021;Protection des eaux;saison;été
+30.01_2024;Protection de l'air;saison;été
+01.2_v4;Hygiène de la production primaire animale;saison;hiver
+01.3_v3opt;Hygiène du lait;saison;hiver
+01.4_v6;Médicaments vétérinaire;saison;hiver
+02.1_v4opt;Santé animale;saison;hiver
+02.2_v6;Trafic des animaux;saison;hiver
+03.30_v1;Prot.anim. - bovins, avec buffles et yacks;saison;hiver
+03.31_v1;Prot.anim. - équidés;saison;hiver
+03.32_v1;Prot.anim. - chèvres;saison;hiver
+03.33_v1;Prot.anim. - moutons;saison;hiver
+03.34_v1;Prot.anim. - porcs;saison;hiver
+03.35_v1;Prot.anim. - lapins;saison;hiver
+03.36_v1;Prot.anim - poules pondeuses;saison;hiver
+03.37_v1;Prot.anim. - volaille à l'engrais;saison;hiver
+03.38_v1;Prot.anim. - lamas et alpagas;saison;hiver
+03.41_v1;Prot.anim. - oies domestiques-canards;saison;hiver
+03.42_v1;Prot.anim. - cerfs;saison;hiver
+03.43_v1;Prot.anim. - Autruches;saison;hiver
+03.60_v1;Interventions entrainant des douleurs;saison;hiver
+12.01_2023;SST-Bovins et buffles d`Asie;saison;hiver
+12.02_2021;SST-Equidés;saison;hiver
+12.03_2021;SST-Chèvres;saison;hiver
+12.04_2023;SST-Porcins;saison;hiver
+12.05_2023;SST-Lapins;saison;hiver
+12.06_2021;SST-Volaille de rente;saison;hiver
+12.20_2026;SRPA Bovins, buffles d'Asie, yaks;saison;hiver
+12.21_2025;SRPA Equidés;saison;hiver
+12.22_2025;SRPA Caprins;saison;hiver
+12.23_2025;SRPA Ovins;saison;hiver
+12.24_2025;SRPA Porcins;saison;hiver
+12.25_2025;SRPA Volaille de rente;saison;hiver
+12.30_2023;Contribution à la mise au pâturage;saison;hiver
+20.01_2021;Protection des eaux;saison;hiver
+07.01_2023;PER Généralités;cultures;herbages
+07.02_2024;PER Documents / enregistrements;cultures;herbages
+07.03_2025;PER Part appropriée de surface de promotion de la biodiversité;cultures;herbages
+07.04_2021;PER Bordures tampon;cultures;herbages
+07.12_2023;PER Généralités ferme & champ;cultures;herbages
+07.13_2025;PER ruissellement et dérive;cultures;herbages
+09.02_2018;Production végétale bio;cultures;herbages
+09.03_2017;Semences et plants bio;cultures;herbages
+20.01_2021;Protection des eaux;cultures;herbages
+30.01_2024;Protection de l'air;cultures;herbages
+01.1.A_2021;Hygiène production végétale - Exigences générales;cultures;cultures_pérennes
+01.1.B_2021;Hygiène production végétale - Produits phytosanitaires et biocides;cultures;cultures_pérennes
+07.01_2023;PER Généralités;cultures;cultures_pérennes
+07.02_2024;PER Documents / enregistrements;cultures;cultures_pérennes
+07.03_2025;PER Part appropriée de surface de promotion de la biodiversité;cultures;cultures_pérennes
+07.04_2021;PER Bordures tampon;cultures;cultures_pérennes
+07.09_2021;PER Arboriculture;cultures;cultures_pérennes
+07.12_2023;PER Généralités ferme & champ;cultures;cultures_pérennes
+07.13_2025;PER ruissellement et dérive;cultures;cultures_pérennes
+09.02_2018;Production végétale bio;cultures;cultures_pérennes
+09.03_2017;Semences et plants bio;cultures;cultures_pérennes
+09.04_2017;Cultures spéciales bio;cultures;cultures_pérennes
+20.01_2021;Protection des eaux;cultures;cultures_pérennes
+30.01_2024;Protection de l'air;cultures;cultures_pérennes
+01.1.A_2021;Hygiène production végétale - Exigences générales;cultures;vigne
+01.1.B_2021;Hygiène production végétale - Produits phytosanitaires et biocides;cultures;vigne
+07.01_2023;PER Généralités;cultures;vigne
+07.02_2024;PER Documents / enregistrements;cultures;vigne
+07.03_2025;PER Part appropriée de surface de promotion de la biodiversité;cultures;vigne
+07.04_2021;PER Bordures tampon;cultures;vigne
 07.11_2021;PER Viticulture;cultures;vigne
-12.01_2023;SST - Bovins et buffles d'Asie;betail;UGB_bovins
-12.02_2021;SST - Ã‰quidÃ©s;betail;UGB_Ã©quidÃ©s
+07.12_2023;PER Généralités ferme & champ;cultures;vigne
+07.13_2025;PER ruissellement et dérive;cultures;vigne
+09.02_2018;Production végétale bio;cultures;vigne
+09.03_2017;Semences et plants bio;cultures;vigne
+09.04_2017;Cultures spéciales bio;cultures;vigne
+20.01_2021;Protection des eaux;cultures;vigne
+30.01_2024;Protection de l'air;cultures;vigne
+01.1.A_2021;Hygiène production végétale - Exigences générales;cultures;terres_assolées
+01.1.B_2021;Hygiène production végétale - Produits phytosanitaires et biocides;cultures;terres_assolées
+07.01_2023;PER Généralités;cultures;terres_assolées
+07.02_2024;PER Documents / enregistrements;cultures;terres_assolées
+07.03_2025;PER Part appropriée de surface de promotion de la biodiversité;cultures;terres_assolées
+07.04_2021;PER Bordures tampon;cultures;terres_assolées
+07.06_2021;PER Grandes cultures et culture maraîchère / surface herbagère : rotation des cultures;cultures;terres_assolées
+07.07_2021;PER Grandes cultures et culture maraîchère : Protection du sol;cultures;terres_assolées
+07.08_2025;PER Grandes cultures et culture maraîchère / surface herbagère : protection phytosanitaire;cultures;terres_assolées
+07.12_2023;PER Généralités ferme & champ;cultures;terres_assolées
+07.13_2025;PER ruissellement et dérive;cultures;terres_assolées
+09.02_2018;Production végétale bio;cultures;terres_assolées
+09.03_2017;Semences et plants bio;cultures;terres_assolées
+09.04_2017;Cultures spéciales bio;cultures;terres_assolées
+20.01_2021;Protection des eaux;cultures;terres_assolées
+30.01_2024;Protection de l'air;cultures;terres_assolées
+01.1.A_2021;Hygiène production végétale - Exigences générales;cultures;baies
+01.1.B_2021;Hygiène production végétale - Produits phytosanitaires et biocides;cultures;baies
+07.01_2023;PER Généralités;cultures;baies
+07.02_2024;PER Documents / enregistrements;cultures;baies
+07.03_2025;PER Part appropriée de surface de promotion de la biodiversité;cultures;baies
+07.04_2021;PER Bordures tampon;cultures;baies
+07.06_2021;PER Grandes cultures et culture maraîchère / surface herbagère : rotation des cultures;cultures;baies
+07.07_2021;PER Grandes cultures et culture maraîchère : Protection du sol;cultures;baies
+07.08_2025;PER Grandes cultures et culture maraîchère / surface herbagère : protection phytosanitaire;cultures;baies
+07.10_2021;PER Baies;cultures;baies
+07.12_2023;PER Généralités ferme & champ;cultures;baies
+07.13_2025;PER ruissellement et dérive;cultures;baies
+09.02_2018;Production végétale bio;cultures;baies
+09.03_2017;Semences et plants bio;cultures;baies
+20.01_2021;Protection des eaux;cultures;baies
+30.01_2024;Protection de l'air;cultures;baies
+07.01_2023;PER Généralités;cultures;SPB_herbages
+07.02_2024;PER Documents / enregistrements;cultures;SPB_herbages
+07.03_2025;PER Part appropriée de surface de promotion de la biodiversité;cultures;SPB_herbages
+07.04_2021;PER Bordures tampon;cultures;SPB_herbages
+07.12_2023;PER Généralités ferme & champ;cultures;SPB_herbages
+08.01_2021;QI A - Prairies extensives;cultures;SPB_herbages
+08.02_2021;QI B - Prairies peu intensives;cultures;SPB_herbages
+08.03_2021;QI C - Pâturages extensifs;cultures;SPB_herbages
+08.04_2021;QI D - Pâturages boisés;cultures;SPB_herbages
+08.05_2021;QI E - Surfaces à litière;cultures;SPB_herbages
+08.07_2021;QI G - prairies riveraines d'un cours d'eau d'un cours d'eau;cultures;SPB_herbages
+09.02_2018;Production végétale bio;cultures;SPB_herbages
+09.03_2017;Semences et plants bio;cultures;SPB_herbages
+07.01_2023;PER Généralités;cultures;SPB_pérennes
+07.02_2024;PER Documents / enregistrements;cultures;SPB_pérennes
+07.03_2025;PER Part appropriée de surface de promotion de la biodiversité;cultures;SPB_pérennes
+07.04_2021;PER Bordures tampon;cultures;SPB_pérennes
+07.12_2023;PER Généralités ferme & champ;cultures;SPB_pérennes
+08.06_2021;QI F - haies, bosquets champêtres et berges boisées;cultures;SPB_pérennes
+08.12_2021;QI L - Arbres fruitiers haute-tige;cultures;SPB_pérennes
+08.13_2021;QI M - Arbres isolés indigènes adaptés au site et allées d'arbres;cultures;SPB_pérennes
+08.14_2021;QI N - Surfaces viticoles présentant une biodiversité naturelle;cultures;SPB_pérennes
+09.02_2018;Production végétale bio;cultures;SPB_pérennes
+09.03_2017;Semences et plants bio;cultures;SPB_pérennes
+08.08_2021;QI H - Jachères florales;cultures;SPB_terres_assolées
+08.09_2021;QI I - Jachères tournantes;cultures;SPB_terres_assolées
+08.10_2021;QI J - Bande culturale extensive;cultures;SPB_terres_assolées
+08.11_2021;QI K - Ourlet sur terres assolées;cultures;SPB_terres_assolées
+09.02_2018;Production végétale bio;cultures;SPB_terres_assolées
+09.03_2017;Semences et plants bio;cultures;SPB_terres_assolées
+07.01_2023;PER Généralités;cultures;SPB_autres
+07.02_2024;PER Documents / enregistrements;cultures;SPB_autres
+07.03_2025;PER Part appropriée de surface de promotion de la biodiversité;cultures;SPB_autres
+07.04_2021;PER Bordures tampon;cultures;SPB_autres
+07.12_2023;PER Généralités ferme & champ;cultures;SPB_autres
+08.15_2021;QI P - Surfaces de promotion de la biodiversité spécifiques à la région;cultures;SPB_autres
+08.26_2017;Sans contribution Q - Fossés humides, mares, étangs;cultures;SPB_autres
+08.27_2017;Sans contribution R - Surfaces rudérales, tas d'épierrage et affleurements rocheux;cultures;SPB_autres
+08.28_2017;Sans contribution S - Murs de pierres sèches;cultures;SPB_autres
+08.29_2017;Surfaces exclues des SPB;cultures;SPB_autres
+09.02_2018;Production végétale bio;cultures;SPB_autres
+09.03_2017;Semences et plants bio;cultures;SPB_autres
+01.2_v4;Hygiène de la production primaire animale;bétail;UGB_bovins
+01.3_v3opt;Hygiène du lait;bétail;UGB_bovins
+01.4_v6;Médicaments vétérinaire;bétail;UGB_bovins
+02.1_v4opt;Santé animale;bétail;UGB_bovins
+02.2_v6;Trafic des animaux;bétail;UGB_bovins
+03.30_v1;Prot.anim. - bovins, avec buffles et yacks;bétail;UGB_bovins
+03.60_v1;Interventions entrainant des douleurs;bétail;UGB_bovins
+09.07_2017;Garde des animaux / Élevage bio: généralités;bétail;UGB_bovins
+09.10_2017;Elevage bio ' exigences spécifiques pour les autres espèces animales;bétail;UGB_bovins
+11.01_2021;Production de lait et de viande basée sur les herbages;bétail;UGB_bovins
+12.01_2023;SST-Bovins et buffles d`Asie;bétail;UGB_bovins
+12.20_2026;SRPA Bovins, buffles d'Asie, yaks;bétail;UGB_bovins
+20.01_2021;Protection des eaux;bétail;UGB_bovins
+01.2_v4;Hygiène de la production primaire animale;bétail;UGB_équidés
+01.3_v3opt;Hygiène du lait;bétail;UGB_équidés
+01.4_v6;Médicaments vétérinaire;bétail;UGB_équidés
+02.1_v4opt;Santé animale;bétail;UGB_équidés
+02.2_v6;Trafic des animaux;bétail;UGB_équidés
+03.31_v1;Prot.anim. - équidés;bétail;UGB_équidés
+03.60_v1;Interventions entrainant des douleurs;bétail;UGB_équidés
+09.07_2017;Garde des animaux / Élevage bio: généralités;bétail;UGB_équidés
+09.10_2017;Elevage bio ' exigences spécifiques pour les autres espèces animales;bétail;UGB_équidés
+11.01_2021;Production de lait et de viande basée sur les herbages;bétail;UGB_équidés
+12.02_2021;SST-Equidés;bétail;UGB_équidés
+12.21_2025;SRPA Equidés;bétail;UGB_équidés
+20.01_2021;Protection des eaux;bétail;UGB_équidés
+01.2_v4;Hygiène de la production primaire animale;bétail;UGB_caprins
+01.3_v3opt;Hygiène du lait;bétail;UGB_caprins
+01.4_v6;Médicaments vétérinaire;bétail;UGB_caprins
+02.1_v4opt;Santé animale;bétail;UGB_caprins
+02.2_v6;Trafic des animaux;bétail;UGB_caprins
+03.32_v1;Prot.anim. - chèvres;bétail;UGB_caprins
+03.60_v1;Interventions entrainant des douleurs;bétail;UGB_caprins
+09.07_2017;Garde des animaux / Élevage bio: généralités;bétail;UGB_caprins
+09.10_2017;Elevage bio ' exigences spécifiques pour les autres espèces animales;bétail;UGB_caprins
+11.01_2021;Production de lait et de viande basée sur les herbages;bétail;UGB_caprins
+12.03_2021;SST-Chèvres;bétail;UGB_caprins
+12.22_2025;SRPA Caprins;bétail;UGB_caprins
+20.01_2021;Protection des eaux;bétail;UGB_caprins
+01.2_v4;Hygiène de la production primaire animale;bétail;UGB_ovins
+01.3_v3opt;Hygiène du lait;bétail;UGB_ovins
+01.4_v6;Médicaments vétérinaire;bétail;UGB_ovins
+02.1_v4opt;Santé animale;bétail;UGB_ovins
+02.2_v6;Trafic des animaux;bétail;UGB_ovins
+03.33_v1;Prot.anim. - moutons;bétail;UGB_ovins
+03.60_v1;Interventions entrainant des douleurs;bétail;UGB_ovins
+09.07_2017;Garde des animaux / Élevage bio: généralités;bétail;UGB_ovins
+09.10_2017;Elevage bio ' exigences spécifiques pour les autres espèces animales;bétail;UGB_ovins
+11.01_2021;Production de lait et de viande basée sur les herbages;bétail;UGB_ovins
+12.23_2025;SRPA Ovins;bétail;UGB_ovins
+20.01_2021;Protection des eaux;bétail;UGB_ovins
+01.2_v4;Hygiène de la production primaire animale;bétail;UGB_porcins
+01.3_v3opt;Hygiène du lait;bétail;UGB_porcins
+01.4_v6;Médicaments vétérinaire;bétail;UGB_porcins
+02.1_v4opt;Santé animale;bétail;UGB_porcins
+02.2_v6;Trafic des animaux;bétail;UGB_porcins
+03.34_v1;Prot.anim. - porcs;bétail;UGB_porcins
+03.60_v1;Interventions entrainant des douleurs;bétail;UGB_porcins
+09.07_2017;Garde des animaux / Élevage bio: généralités;bétail;UGB_porcins
+09.08_2017;Elevage bio - exigences spécifiques pour les porcs;bétail;UGB_porcins
+12.04_2023;SST-Porcins;bétail;UGB_porcins
+12.24_2025;SRPA Porcins;bétail;UGB_porcins
+20.01_2021;Protection des eaux;bétail;UGB_porcins
+01.2_v4;Hygiène de la production primaire animale;bétail;UGB_volailles
+01.3_v3opt;Hygiène du lait;bétail;UGB_volailles
+01.4_v6;Médicaments vétérinaire;bétail;UGB_volailles
+02.1_v4opt;Santé animale;bétail;UGB_volailles
+02.2_v6;Trafic des animaux;bétail;UGB_volailles
+03.36_v1;Prot.anim - poules pondeuses;bétail;UGB_volailles
+03.37_v1;Prot.anim. - volaille à l'engrais;bétail;UGB_volailles
+03.60_v1;Interventions entrainant des douleurs;bétail;UGB_volailles
+09.07_2017;Garde des animaux / Élevage bio: généralités;bétail;UGB_volailles
+09.09_2017;Elevage bio - exigences spécifiques pour la volaille;bétail;UGB_volailles
+12.06_2021;SST-Volaille de rente;bétail;UGB_volailles
+12.25_2025;SRPA Volaille de rente;bétail;UGB_volailles
+20.01_2021;Protection des eaux;bétail;UGB_volailles
+01.2_v4;Hygiène de la production primaire animale;bétail;UGB_lapins
+01.3_v3opt;Hygiène du lait;bétail;UGB_lapins
+01.4_v6;Médicaments vétérinaire;bétail;UGB_lapins
+02.1_v4opt;Santé animale;bétail;UGB_lapins
+02.2_v6;Trafic des animaux;bétail;UGB_lapins
+03.35_v1;Prot.anim. - lapins;bétail;UGB_lapins
+03.60_v1;Interventions entrainant des douleurs;bétail;UGB_lapins
+09.07_2017;Garde des animaux / Élevage bio: généralités;bétail;UGB_lapins
+09.10_2017;Elevage bio ' exigences spécifiques pour les autres espèces animales;bétail;UGB_lapins
+12.05_2023;SST-Lapins;bétail;UGB_lapins
+20.01_2021;Protection des eaux;bétail;UGB_lapins
+01.2_v4;Hygiène de la production primaire animale;bétail;UGB_autresFG
+01.3_v3opt;Hygiène du lait;bétail;UGB_autresFG
+01.4_v6;Médicaments vétérinaire;bétail;UGB_autresFG
+02.1_v4opt;Santé animale;bétail;UGB_autresFG
+02.2_v6;Trafic des animaux;bétail;UGB_autresFG
+03.38_v1;Prot.anim. - lamas et alpagas;bétail;UGB_autresFG
+03.42_v1;Prot.anim. - cerfs;bétail;UGB_autresFG
+03.60_v1;Interventions entrainant des douleurs;bétail;UGB_autresFG
+09.07_2017;Garde des animaux / Élevage bio: généralités;bétail;UGB_autresFG
+09.10_2017;Elevage bio ' exigences spécifiques pour les autres espèces animales;bétail;UGB_autresFG
+12.26_2025;SRPA Animaux sauvages;bétail;UGB_autresFG
+20.01_2021;Protection des eaux;bétail;UGB_autresFG
+01.2_v4;Hygiène de la production primaire animale;bétail;UB_autresNFG
+01.3_v3opt;Hygiène du lait;bétail;UB_autresNFG
+01.4_v6;Médicaments vétérinaire;bétail;UB_autresNFG
+02.1_v4opt;Santé animale;bétail;UB_autresNFG
+02.2_v6;Trafic des animaux;bétail;UB_autresNFG
+03.41_v1;Prot.anim. - oies domestiques-canards;bétail;UB_autresNFG
+03.43_v1;Prot.anim. - Autruches;bétail;UB_autresNFG
+03.60_v1;Interventions entrainant des douleurs;bétail;UB_autresNFG
+09.07_2017;Garde des animaux / Élevage bio: généralités;bétail;UB_autresNFG
+09.10_2017;Elevage bio ' exigences spécifiques pour les autres espèces animales;bétail;UB_autresNFG
+20.01_2021;Protection des eaux;bétail;UB_autresNFG
+09.01_2017;Généralités concernant l'agriculture biologique;inscriptions;BIO
+09.02_2018;Production végétale bio;inscriptions;BIO
+09.03_2017;Semences et plants bio;inscriptions;BIO
+09.04_2017;Cultures spéciales bio;inscriptions;BIO
+09.07_2017;Garde des animaux / Élevage bio: généralités;inscriptions;BIO
+09.08_2017;Elevage bio - exigences spécifiques pour les porcs;inscriptions;BIO
+09.09_2017;Elevage bio - exigences spécifiques pour la volaille;inscriptions;BIO
+11.01_2021;Production de lait et de viande basée sur les herbages;inscriptions;insc_PLVH
+12.01_2023;SST-Bovins et buffles d`Asie;inscriptions;insc_SST_Bovins
+12.02_2021;SST-Equidés;inscriptions;insc_SST_Equidés
+12.03_2021;SST-Chèvres;inscriptions;insc_SST_Chèvres
+12.04_2023;SST-Porcins;inscriptions;insc_SST_Porcins
+12.05_2023;SST-Lapins;inscriptions;insc_SST_Lapins
+12.06_2021;SST-Volaille de rente;inscriptions;insc_SST_Volailles
+12.20_2026;SRPA Bovins, buffles d'Asie, yaks;inscriptions;insc_SRPA_Bovins
+12.21_2025;SRPA Equidés;inscriptions;insc_SRPA_Equidés
+12.22_2025;SRPA Caprins;inscriptions;insc_SRPA_Caprins
+12.23_2025;SRPA Ovins;inscriptions;insc_SRPA_Ovins
+12.24_2025;SRPA Porcins;inscriptions;insc_SRPA_Porcins
+12.25_2025;SRPA Volaille de rente;inscriptions;insc_SRPA_Volailles
+12.26_2025;SRPA Animaux sauvages;inscriptions;insc_SRPA_Wildtiere
+12.30_2023;Contribution à la mise au pâturage;inscriptions;insc_MAP
+12.31_2023;Contribution à la mise au pâturage_part de mise au pâturage;inscriptions;insc_MAP
+16.01_2023;Non-recours aux PPh dans les grandes cultures;inscriptions;insc_LPA
+16.02_2023;Non-recours aux PPh dans les cultures maraîchères et les cultures de petits fruits;inscriptions;insc_LPV
+16.03_2023;Non-recours aux insecticides, acaricides et fongicides après la floraison dans les cultures pérennes;inscriptions;insc_LPP
+16.04_2023;Exploitation des cultures pérennes à l'aide d'intrants conformes à l'agriculture biologique;inscriptions;insc_PBA
+16.05_2023;Non-recours aux herbicides dans les grandes cultures et les cultures spéciales;inscriptions;insc_NRH
+18.01_2023;Couverture appropriée du sol;inscriptions;insc_GSC
+18.01_2023;Couverture appropriée du sol;inscriptions;insc_xSC
+18.02_2024;Techniques culturales préservant le sol;inscriptions;insc_SMT
+08.40_2023;Biodiversité fonctionnelle_bandes semées pour organismes utiles;inscriptions;insc_FIS
+19.01_2023;Utilisation efficiente de l'azote dans les grandes cultures;inscriptions;insc_CEU

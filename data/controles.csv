@@ -1,13 +1,158 @@
-rubrique;controle
-07.01_2023;Carnet des prÃ©s/champs
-07.01_2023;Bilan de fumure
-07.06_2021;Carnet des prÃ©s/champs
-07.06_2021;Journal des traitements (cultures)
-07.06_2021;Visite de parcelles
-07.09_2021;Carnet des prÃ©s/champs
-07.09_2021;Journal des traitements (cultures)
-07.09_2021;Visite de parcelles
-07.11_2021;Journal des traitements (cultures)
-07.11_2021;Visite de parcelles
-12.01_2023;Visite des Ã©curies
-12.02_2021;Visite des Ã©curies
+id;label;groupe;condition
+07.02_2024;PER Documents / enregistrements;contrôle;carnet_prés
+07.06_2021;PER Grandes cultures et culture maraîchère / surface herbagère : rotation des cultures;contrôle;carnet_prés
+07.07_2021;PER Grandes cultures et culture maraîchère : Protection du sol;contrôle;carnet_prés
+07.08_2025;PER Grandes cultures et culture maraîchère / surface herbagère : protection phytosanitaire;contrôle;carnet_prés
+07.09_2021;PER Arboriculture;contrôle;carnet_prés
+07.10_2021;PER Baies;contrôle;carnet_prés
+09.02_2018;Production végétale bio;contrôle;carnet_prés
+09.03_2017;Semences et plants bio;contrôle;carnet_prés
+18.01_2023;Couverture appropriée du sol;contrôle;carnet_prés
+18.02_2024;Techniques culturales préservant le sol;contrôle;carnet_prés
+19.01_2023;Utilisation efficiente de l'azote dans les grandes cultures;contrôle;carnet_prés
+07.01_2023;PER Généralités;contrôle;bilan_fumure
+07.02_2024;PER Documents / enregistrements;contrôle;bilan_fumure
+09.02_2018;Production végétale bio;contrôle;bilan_fumure
+19.01_2023;Utilisation efficiente de l'azote dans les grandes cultures;contrôle;bilan_fumure
+07.02_2024;PER Documents / enregistrements;contrôle;liste_surfaces
+07.03_2025;PER Part appropriée de surface de promotion de la biodiversité;contrôle;liste_surfaces
+07.04_2021;PER Bordures tampon;contrôle;liste_surfaces
+07.06_2021;PER Grandes cultures et culture maraîchère / surface herbagère : rotation des cultures;contrôle;liste_surfaces
+09.01_2017;Généralités concernant l'agriculture biologique;contrôle;liste_surfaces
+07.01_2023;PER Généralités;contrôle;analyse_sol
+07.13_2025;PER ruissellement et dérive;contrôle;analyse_sol
+09.07_2017;Garde des animaux / Élevage bio: généralités;contrôle;bilan_fourrager
+09.08_2017;Elevage bio - exigences spécifiques pour les porcs;contrôle;bilan_fourrager
+09.09_2017;Elevage bio - exigences spécifiques pour la volaille;contrôle;bilan_fourrager
+09.10_2017;Elevage bio ' exigences spécifiques pour les autres espèces animales;contrôle;bilan_fourrager
+11.01_2021;Production de lait et de viande basée sur les herbages;contrôle;bilan_fourrager
+01.1.A_2021;Hygiène production végétale - Exigences générales;contrôle;plan_traitement
+01.1.B_2021;Hygiène production végétale - Produits phytosanitaires et biocides;contrôle;plan_traitement
+07.01_2023;PER Généralités;contrôle;plan_traitement
+07.02_2024;PER Documents / enregistrements;contrôle;plan_traitement
+07.06_2021;PER Grandes cultures et culture maraîchère / surface herbagère : rotation des cultures;contrôle;plan_traitement
+07.07_2021;PER Grandes cultures et culture maraîchère : Protection du sol;contrôle;plan_traitement
+07.08_2025;PER Grandes cultures et culture maraîchère / surface herbagère : protection phytosanitaire;contrôle;plan_traitement
+07.09_2021;PER Arboriculture;contrôle;plan_traitement
+07.10_2021;PER Baies;contrôle;plan_traitement
+07.11_2021;PER Viticulture;contrôle;plan_traitement
+09.02_2018;Production végétale bio;contrôle;plan_traitement
+09.04_2017;Cultures spéciales bio;contrôle;plan_traitement
+16.01_2023;Non-recours aux PPh dans les grandes cultures;contrôle;plan_traitement
+16.02_2023;Non-recours aux PPh dans les cultures maraîchères et les cultures de petits fruits;contrôle;plan_traitement
+16.03_2023;Non-recours aux insecticides, acaricides et fongicides après la floraison dans les cultures pérennes;contrôle;plan_traitement
+16.04_2023;Exploitation des cultures pérennes à l'aide d'intrants conformes à l'agriculture biologique;contrôle;plan_traitement
+16.05_2023;Non-recours aux herbicides dans les grandes cultures et les cultures spéciales;contrôle;plan_traitement
+01.4_v6;Médicaments vétérinaire;contrôle;checklist_vét
+02.1_v4opt;Santé animale;contrôle;checklist_vét
+03.60_v1;Interventions entrainant des douleurs;contrôle;checklist_vét
+09.07_2017;Garde des animaux / Élevage bio: généralités;contrôle;checklist_vét
+09.08_2017;Elevage bio - exigences spécifiques pour les porcs;contrôle;checklist_vét
+09.09_2017;Elevage bio - exigences spécifiques pour la volaille;contrôle;checklist_vét
+09.10_2017;Elevage bio ' exigences spécifiques pour les autres espèces animales;contrôle;checklist_vét
+02.2_v6;Trafic des animaux;contrôle;BDTA
+03.60_v1;Interventions entrainant des douleurs;contrôle;BDTA
+09.07_2017;Garde des animaux / Élevage bio: généralités;contrôle;BDTA
+09.08_2017;Elevage bio - exigences spécifiques pour les porcs;contrôle;BDTA
+09.09_2017;Elevage bio - exigences spécifiques pour la volaille;contrôle;BDTA
+09.10_2017;Elevage bio ' exigences spécifiques pour les autres espèces animales;contrôle;BDTA
+07.12_2023;PER Généralités ferme & champ;contrôle;vérification_machines
+07.13_2025;PER ruissellement et dérive;contrôle;vérification_machines
+30.01_2024;Protection de l'air;contrôle;vérification_machines
+09.07_2017;Garde des animaux / Élevage bio: généralités;contrôle;journal_sorties
+09.08_2017;Elevage bio - exigences spécifiques pour les porcs;contrôle;journal_sorties
+09.09_2017;Elevage bio - exigences spécifiques pour la volaille;contrôle;journal_sorties
+09.10_2017;Elevage bio ' exigences spécifiques pour les autres espèces animales;contrôle;journal_sorties
+12.20_2026;SRPA Bovins, buffles d'Asie, yaks;contrôle;journal_sorties
+12.21_2025;SRPA Equidés;contrôle;journal_sorties
+12.22_2025;SRPA Caprins;contrôle;journal_sorties
+12.23_2025;SRPA Ovins;contrôle;journal_sorties
+12.24_2025;SRPA Porcins;contrôle;journal_sorties
+12.25_2025;SRPA Volaille de rente;contrôle;journal_sorties
+12.26_2025;SRPA Animaux sauvages;contrôle;journal_sorties
+12.30_2023;Contribution à la mise au pâturage;contrôle;journal_sorties
+12.31_2023;Contribution à la mise au pâturage_part de mise au pâturage;contrôle;journal_sorties
+07.04_2021;PER Bordures tampon;contrôle;visite_parcelles
+07.06_2021;PER Grandes cultures et culture maraîchère / surface herbagère : rotation des cultures;contrôle;visite_parcelles
+07.07_2021;PER Grandes cultures et culture maraîchère : Protection du sol;contrôle;visite_parcelles
+07.08_2025;PER Grandes cultures et culture maraîchère / surface herbagère : protection phytosanitaire;contrôle;visite_parcelles
+07.09_2021;PER Arboriculture;contrôle;visite_parcelles
+07.10_2021;PER Baies;contrôle;visite_parcelles
+07.11_2021;PER Viticulture;contrôle;visite_parcelles
+07.13_2025;PER ruissellement et dérive;contrôle;visite_parcelles
+09.04_2017;Cultures spéciales bio;contrôle;visite_parcelles
+16.01_2023;Non-recours aux PPh dans les grandes cultures;contrôle;visite_parcelles
+16.05_2023;Non-recours aux herbicides dans les grandes cultures et les cultures spéciales;contrôle;visite_parcelles
+18.01_2023;Couverture appropriée du sol;contrôle;visite_parcelles
+18.02_2024;Techniques culturales préservant le sol;contrôle;visite_parcelles
+03.30_v1;Prot.anim. - bovins, avec buffles et yacks;contrôle;visite_écuries
+03.31_v1;Prot.anim. - équidés;contrôle;visite_écuries
+03.32_v1;Prot.anim. - chèvres;contrôle;visite_écuries
+03.33_v1;Prot.anim. - moutons;contrôle;visite_écuries
+03.34_v1;Prot.anim. - porcs;contrôle;visite_écuries
+03.35_v1;Prot.anim. - lapins;contrôle;visite_écuries
+03.36_v1;Prot.anim - poules pondeuses;contrôle;visite_écuries
+03.37_v1;Prot.anim. - volaille à l'engrais;contrôle;visite_écuries
+03.38_v1;Prot.anim. - lamas et alpagas;contrôle;visite_écuries
+03.41_v1;Prot.anim. - oies domestiques-canards;contrôle;visite_écuries
+03.42_v1;Prot.anim. - cerfs;contrôle;visite_écuries
+03.43_v1;Prot.anim. - Autruches;contrôle;visite_écuries
+09.07_2017;Garde des animaux / Élevage bio: généralités;contrôle;visite_écuries
+09.08_2017;Elevage bio - exigences spécifiques pour les porcs;contrôle;visite_écuries
+09.09_2017;Elevage bio - exigences spécifiques pour la volaille;contrôle;visite_écuries
+09.10_2017;Elevage bio ' exigences spécifiques pour les autres espèces animales;contrôle;visite_écuries
+12.01_2023;SST-Bovins et buffles d`Asie;contrôle;visite_écuries
+12.02_2021;SST-Equidés;contrôle;visite_écuries
+12.03_2021;SST-Chèvres;contrôle;visite_écuries
+12.04_2023;SST-Porcins;contrôle;visite_écuries
+12.05_2023;SST-Lapins;contrôle;visite_écuries
+12.06_2021;SST-Volaille de rente;contrôle;visite_écuries
+12.20_2026;SRPA Bovins, buffles d'Asie, yaks;contrôle;visite_écuries
+12.21_2025;SRPA Equidés;contrôle;visite_écuries
+12.22_2025;SRPA Caprins;contrôle;visite_écuries
+12.23_2025;SRPA Ovins;contrôle;visite_écuries
+12.24_2025;SRPA Porcins;contrôle;visite_écuries
+12.25_2025;SRPA Volaille de rente;contrôle;visite_écuries
+12.26_2025;SRPA Animaux sauvages;contrôle;visite_écuries
+12.30_2023;Contribution à la mise au pâturage;contrôle;visite_écuries
+12.31_2023;Contribution à la mise au pâturage_part de mise au pâturage;contrôle;visite_écuries
+20.01_2021;Protection des eaux;contrôle;visite_écuries
+01.2_v4;Hygiène de la production primaire animale;contrôle;inspection_bétail
+02.1_v4opt;Santé animale;contrôle;inspection_bétail
+03.30_v1;Prot.anim. - bovins, avec buffles et yacks;contrôle;inspection_bétail
+03.31_v1;Prot.anim. - équidés;contrôle;inspection_bétail
+03.32_v1;Prot.anim. - chèvres;contrôle;inspection_bétail
+03.33_v1;Prot.anim. - moutons;contrôle;inspection_bétail
+03.34_v1;Prot.anim. - porcs;contrôle;inspection_bétail
+03.35_v1;Prot.anim. - lapins;contrôle;inspection_bétail
+03.36_v1;Prot.anim - poules pondeuses;contrôle;inspection_bétail
+03.37_v1;Prot.anim. - volaille à l'engrais;contrôle;inspection_bétail
+03.38_v1;Prot.anim. - lamas et alpagas;contrôle;inspection_bétail
+03.41_v1;Prot.anim. - oies domestiques-canards;contrôle;inspection_bétail
+03.42_v1;Prot.anim. - cerfs;contrôle;inspection_bétail
+03.43_v1;Prot.anim. - Autruches;contrôle;inspection_bétail
+03.60_v1;Interventions entrainant des douleurs;contrôle;inspection_bétail
+09.07_2017;Garde des animaux / Élevage bio: généralités;contrôle;inspection_bétail
+09.08_2017;Elevage bio - exigences spécifiques pour les porcs;contrôle;inspection_bétail
+09.09_2017;Elevage bio - exigences spécifiques pour la volaille;contrôle;inspection_bétail
+09.10_2017;Elevage bio ' exigences spécifiques pour les autres espèces animales;contrôle;inspection_bétail
+12.01_2023;SST-Bovins et buffles d`Asie;contrôle;inspection_bétail
+12.02_2021;SST-Equidés;contrôle;inspection_bétail
+12.03_2021;SST-Chèvres;contrôle;inspection_bétail
+12.04_2023;SST-Porcins;contrôle;inspection_bétail
+12.05_2023;SST-Lapins;contrôle;inspection_bétail
+12.06_2021;SST-Volaille de rente;contrôle;inspection_bétail
+12.20_2026;SRPA Bovins, buffles d'Asie, yaks;contrôle;inspection_bétail
+12.21_2025;SRPA Equidés;contrôle;inspection_bétail
+12.22_2025;SRPA Caprins;contrôle;inspection_bétail
+12.23_2025;SRPA Ovins;contrôle;inspection_bétail
+12.24_2025;SRPA Porcins;contrôle;inspection_bétail
+12.25_2025;SRPA Volaille de rente;contrôle;inspection_bétail
+12.26_2025;SRPA Animaux sauvages;contrôle;inspection_bétail
+12.30_2023;Contribution à la mise au pâturage;contrôle;inspection_bétail
+12.31_2023;Contribution à la mise au pâturage_part de mise au pâturage;contrôle;inspection_bétail
+01.1.A_2021;Hygiène production végétale - Exigences générales;contrôle;visite_local
+01.2_v4;Hygiène de la production primaire animale;contrôle;visite_local
+01.3_v3opt;Hygiène du lait;contrôle;visite_local
+20.01_2021;Protection des eaux;contrôle;visite_local
+30.01_2024;Protection de l'air;contrôle;visite_local
