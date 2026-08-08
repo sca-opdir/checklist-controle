@@ -11,7 +11,7 @@ const categories = [
     {
         id: "saison",
         titre: "Saison",
-        question: "Quelle saison concerne le contrôle ?",
+        question: "A quelle saison le contrôle a lieu ?",
         selection: "single"
     },
 
@@ -23,7 +23,7 @@ const categories = [
     },
 
     {
-        id: "betail",
+        id: "bétail",
         titre: "Bétail",
         question: "Quels animaux sont présents sur l'exploitation ?",
         selection: "multiple"
@@ -36,7 +36,7 @@ const categories = [
         selection: "multiple"
     }
 ];
-
+ 
 
 // --------------------------------------------------
 // 2. DONNÉES CHARGÉES DEPUIS LES CSV
