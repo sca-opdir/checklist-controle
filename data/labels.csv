@@ -1,61 +1,61 @@
 id;label;groupe
-été;Eté;saison
+Ã©tÃ©;EtÃ©;saison
 hiver;Hiver;saison
 herbages;Herbages;cultures
-cultures_pérennes;Cultures pérennes;cultures
+cultures_pÃ©rennes;Cultures pÃ©rennes;cultures
 vigne;Vigne;cultures
-terres_assolées;Terres assolées;cultures
+terres_assolÃ©es;Terres assolÃ©es;cultures
 baies;Baies;cultures
 SPB_herbages;SPB herbages;cultures
-SPB_pérennes;SPB cultures pérennes et ligneux;cultures
-SPB_terres_assolées;SPB terres assolées;cultures
+SPB_pÃ©rennes;SPB cultures pÃ©rennes et ligneux;cultures
+SPB_terres_assolÃ©es;SPB terres assolÃ©es;cultures
 SPB_autres;Autres SPB;cultures
-UGB_bovins;UGB bovins;bétail
-UGB_équidés;UGB équidés;bétail
-UGB_caprins;UGB caprins;bétail
-UGB_ovins;UGB ovins;bétail
-UGB_porcins;UGB porcins;bétail
-UGB_volailles;UGB volailles;bétail
-UGB_lapins;UGB lapins;bétail
-UGB_autresFG;UGB Autres animaux consommant du fourrage grossier;bétail
-UB_autresNFG;UGB Autres animaux;bétail
+UGB_bovins;UGB bovins;bÃ©tail
+UGB_Ã©quidÃ©s;UGB Ã©quidÃ©s;bÃ©tail
+UGB_caprins;UGB caprins;bÃ©tail
+UGB_ovins;UGB ovins;bÃ©tail
+UGB_porcins;UGB porcins;bÃ©tail
+UGB_volailles;UGB volailles;bÃ©tail
+UGB_lapins;UGB lapins;bÃ©tail
+UGB_autresFG;UGB Autres animaux consommant du fourrage grossier;bÃ©tail
+UB_autresNFG;UGB Autres animaux;bÃ©tail
 BIO;Agriculture biologique;inscriptions
 insc_PLVH;PLVH;inscriptions
 insc_SST_Bovins;SST bovins;inscriptions
-insc_SST_Equidés;SST équidés;inscriptions
-insc_SST_Chèvres;SST caprins;inscriptions
+insc_SST_EquidÃ©s;SST Ã©quidÃ©s;inscriptions
+insc_SST_ChÃ¨vres;SST caprins;inscriptions
 insc_SST_Porcins;SST porcins;inscriptions
 insc_SST_Lapins;SST lapins;inscriptions
 insc_SST_Volailles;SST volailles;inscriptions
 insc_SRPA_Bovins;SRPA bovins;inscriptions
-insc_SRPA_Equidés;SRPA équidés;inscriptions
+insc_SRPA_EquidÃ©s;SRPA Ã©quidÃ©s;inscriptions
 insc_SRPA_Caprins;SRPA caprins;inscriptions
 insc_SRPA_Ovins;SRPA ovins;inscriptions
 insc_SRPA_Porcins;SRPA porcins;inscriptions
 insc_SRPA_Volailles;SRPA volailles;inscriptions
 insc_SRPA_Wildtiere;SRPA animaux sauvages;inscriptions
-insc_MAP;Mise au pâturage;inscriptions
+insc_MAP;Mise au pÃ¢turage;inscriptions
 insc_LPA;Non-rec. PPh grandes cultures;inscriptions
 insc_LPV;Non-rec. PPh maraich. et petits fruits;inscriptions
-insc_LPP;Non-rec. PPh cult. pérennes après floraison;inscriptions
+insc_LPP;Non-rec. PPh cult. pÃ©rennes aprÃ¨s floraison;inscriptions
 insc_PBA;Intrants bio.;inscriptions
 insc_NRH;Non-rec. herbicides;inscriptions
 insc_GSC;Couverture du sol vigne;inscriptions
 insc_xSC;Couverture du sol terres ouvertes;inscriptions
-insc_SMT;Techniques culturales préservant le sol;inscriptions
-insc_FIS;Bandes semées pour organismes utiles;inscriptions
+insc_SMT;Techniques culturales prÃ©servant le sol;inscriptions
+insc_FIS;Bandes semÃ©es pour organismes utiles;inscriptions
 insc_CEU;Utilisation efficiente de l'azote;inscriptions
-carnet_prés;Carnet des prés/champs;contrôle
-bilan_fumure;Bilan de fumure;contrôle
-liste_surfaces;Atlas/liste des surfaces;contrôle
-analyse_sol;Analyse de sol;contrôle
-bilan_fourrager;Bilan fourrager;contrôle
-plan_traitement;Plan/journal de traitement;contrôle
-checklist_vét;Checklist vétérinaire;contrôle
-BDTA;Relevé BDTA;contrôle
-vérification_machines;Vérification des machines;contrôle
-journal_sorties;Journal des sorties;contrôle
-visite_parcelles;Visite de parcelles;contrôle
-visite_écuries;Visite des écuries;contrôle
-inspection_bétail;Inspection du bétail;contrôle
-visite_local;Visite de locaux;contrôle
+carnet_prÃ©s;Carnet des prÃ©s/champs;contrÃ´le
+bilan_fumure;Bilan de fumure;contrÃ´le
+liste_surfaces;Atlas/liste des surfaces;contrÃ´le
+analyse_sol;Analyse de sol;contrÃ´le
+bilan_fourrager;Bilan fourrager;contrÃ´le
+plan_traitement;Plan/journal de traitement;contrÃ´le
+checklist_vÃ©t;Checklist vÃ©tÃ©rinaire;contrÃ´le
+BDTA;RelevÃ© BDTA;contrÃ´le
+vÃ©rification_machines;VÃ©rification des machines;contrÃ´le
+journal_sorties;Journal des sorties;contrÃ´le
+visite_parcelles;Visite de parcelles;contrÃ´le
+visite_Ã©curies;Visite des Ã©curies;contrÃ´le
+inspection_bÃ©tail;Inspection du bÃ©tail;contrÃ´le
+visite_local;Visite de locaux;contrÃ´le
