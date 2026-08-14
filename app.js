@@ -1,17 +1,12 @@
 // --------------------------------------------------
 // 1. DÉFINITION DES ÉTAPES DU QUESTIONNAIRE
 // --------------------------------------------------
-//
-// Les options ne sont plus codées ici.
-// Elles seront récupérées automatiquement
-// depuis labels.csv grâce à la colonne "groupe".
-// --------------------------------------------------
 
 const categories = [
     {
         id: "saison",
         titre: "Saison",
-        question: "A quelle saison le contrôle a lieu ?",
+        question: "Quelle saison concerne le contrôle ?",
         selection: "single"
     },
 
@@ -36,7 +31,7 @@ const categories = [
         selection: "multiple"
     }
 ];
- 
+
 
 // --------------------------------------------------
 // 2. DONNÉES CHARGÉES DEPUIS LES CSV
@@ -112,7 +107,7 @@ function parseCSV(text) {
 
 
 // --------------------------------------------------
-// 6. CHARGEMENT DES 4 FICHIERS CSV
+// 6. CHARGEMENT DES FICHIERS CSV
 // --------------------------------------------------
 
 async function loadData() {
@@ -132,7 +127,7 @@ async function loadData() {
 
 
     // --------------------------------------------------
-    // VÉRIFICATION DU CHARGEMENT
+    // VÉRIFICATION
     // --------------------------------------------------
 
     if (!rubriquesResponse.ok) {
@@ -161,7 +156,7 @@ async function loadData() {
 
 
     // --------------------------------------------------
-    // LECTURE DES FICHIERS
+    // LECTURE
     // --------------------------------------------------
 
     const rubriquesText =
@@ -179,14 +174,14 @@ async function loadData() {
 
     // --------------------------------------------------
     // LABELS
+    // --------------------------------------------------
     //
-    // labels.csv :
+    // Exemple :
     //
     // id;label;groupe
-    // été;Été;saison
-    // vigne;Vigne;cultures
-    // UGB_bovins;Bovins;betail
-    // insc_PLVH;PLVH;inscriptions
+    // UGB_bovins;UGB bovins;betail
+    // bilan_fourrager;Bilan fourrager;contrôle
+    //
     // --------------------------------------------------
 
     const labelsRows =
@@ -206,6 +201,7 @@ async function loadData() {
 
     // --------------------------------------------------
     // RUBRIQUES
+    // --------------------------------------------------
     //
     // Exemple :
     //
@@ -218,6 +214,7 @@ async function loadData() {
     // été
     // ET
     // (terres_assolées OU baies)
+    //
     // --------------------------------------------------
 
     const rubriquesRows =
@@ -264,6 +261,7 @@ async function loadData() {
 
     // --------------------------------------------------
     // DÉPENDANCES
+    // --------------------------------------------------
     //
     // Plusieurs lignes pour une même option = OU
     //
@@ -272,9 +270,10 @@ async function loadData() {
     // insc_PLVH;UGB_bovins
     // insc_PLVH;UGB_équidés
     //
-    // signifie :
+    // =
     //
     // UGB_bovins OU UGB_équidés
+    //
     // --------------------------------------------------
 
     const dependancesRows =
@@ -311,28 +310,16 @@ function getLabel(id) {
 // --------------------------------------------------
 // 8. RÉCUPÉRER LES OPTIONS D'UN GROUPE
 // --------------------------------------------------
-//
-// Exemple :
-//
-// getOptionsForGroup("inscriptions")
-//
-// retourne automatiquement :
-//
-// insc_PLVH
-// insc_SST
-// insc_SRPA
-// insc_MAP
-//
-// selon labels.csv
-// --------------------------------------------------
 
 function getOptionsForGroup(groupId) {
 
     return Object.values(labels)
+
         .filter(
             item =>
                 item.groupe === groupId
         )
+
         .map(
             item =>
                 item.id
@@ -351,13 +338,14 @@ function getAllSelected() {
 
 
 // --------------------------------------------------
-// 10. CALCULER LES CATÉGORIES À AFFICHER
+// 10. CALCULER LES CATÉGORIES VISIBLES
 // --------------------------------------------------
 //
 // Particularité métier :
 //
 // si saison = hiver,
-// l'étape "cultures" est masquée.
+// on ne montre pas l'étape cultures.
+//
 // --------------------------------------------------
 
 function getVisibleCategories() {
@@ -366,9 +354,8 @@ function getVisibleCategories() {
         answers.saison.includes("hiver");
 
 
-    // Si l'utilisateur avait choisi des cultures
-    // puis revient en arrière et choisit hiver,
-    // les anciennes réponses sont effacées.
+    // Effacer les anciennes cultures
+    // si l'utilisateur passe de été à hiver.
 
     if (hiver) {
         answers.cultures = [];
@@ -401,7 +388,7 @@ function isOptionAvailable(optionId) {
 
 
     // Pas de dépendance :
-    // l'option est toujours disponible.
+    // l'option est disponible.
 
     if (!dependency) {
         return true;
@@ -412,9 +399,10 @@ function isOptionAvailable(optionId) {
         getAllSelected();
 
 
-    // Une seule des conditions suffit.
+    // Au moins une condition doit être remplie.
 
     return dependency.any.some(
+
         condition =>
             allSelected.includes(condition)
     );
@@ -422,7 +410,7 @@ function isOptionAvailable(optionId) {
 
 
 // --------------------------------------------------
-// 12. NETTOYER LES RÉPONSES DEVENUES INCOMPATIBLES
+// 12. SUPPRIMER LES RÉPONSES DEVENUES IMPOSSIBLES
 // --------------------------------------------------
 
 function removeUnavailableAnswers() {
@@ -455,7 +443,7 @@ function renderStep() {
         getVisibleCategories();
 
 
-    // Sécurité si le nombre d'étapes visibles change.
+    // Sécurité si le nombre d'étapes change.
 
     if (
         currentStep >=
@@ -492,7 +480,7 @@ function renderStep() {
     options.forEach(optionId => {
 
 
-        // Ne pas afficher une option
+        // Ne pas afficher les options
         // dont les dépendances ne sont pas remplies.
 
         if (!isOptionAvailable(optionId)) {
@@ -507,9 +495,6 @@ function renderStep() {
                 ? "checked"
                 : "";
 
-
-        // Saison = bouton radio
-        // autres groupes = cases à cocher
 
         const inputType =
             category.selection === "single"
@@ -651,12 +636,13 @@ function renderStep() {
 //
 // Exemple :
 //
-// saison : été
+// saison = été
 //
 // ET
 //
-// cultures :
+// cultures =
 // terres_assolées OU baies
+//
 // --------------------------------------------------
 
 function rubriqueApplicable(rubrique) {
@@ -694,6 +680,7 @@ function rubriqueApplicable(rubrique) {
 function getControles(rubriqueId) {
 
     return controles
+
         .filter(
 
             row =>
@@ -782,13 +769,28 @@ function showResults() {
             );
 
 
+        // --------------------------------------------------
+        // IMPORTANT :
+        //
+        // controles.csv contient les IDs.
+        //
+        // Exemple :
+        //
+        // bilan_fourrager
+        //
+        // On utilise getLabel() pour afficher :
+        //
+        // Bilan fourrager
+        // --------------------------------------------------
+
         const controlesHTML =
             listeControles.length > 0
 
                 ? listeControles
                     .map(
-                        controle =>
-                            `<li>${controle}</li>`
+
+                        controleId =>
+                            `<li>${getLabel(controleId)}</li>`
                     )
                     .join("")
 
@@ -896,7 +898,7 @@ previousButton.addEventListener(
 
 
 // --------------------------------------------------
-// 19. DÉMARRAGE DE L'APPLICATION
+// 19. DÉMARRAGE
 // --------------------------------------------------
 
 async function startApp() {
