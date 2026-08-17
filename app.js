@@ -127,7 +127,7 @@ async function loadData() {
         fetch("./data/dependances.csv"),
         fetch("./data/labels.csv"),
         fetch("./data/tous_les_PC.xlsx"),
-        fetch("./data/rubshort2lab_edited.xlsx")
+        fetch("./data/rubshort2lab_edited_v2.xlsx")
     ]);
 
 
@@ -167,7 +167,7 @@ async function loadData() {
 
     if (!rubshort2labResponse.ok) {
         throw new Error(
-            "Impossible de charger rubshort2lab_edited.xlsx"
+            "Impossible de charger rubshort2lab_edited_v2.xlsx"
         );
     }
 
@@ -306,7 +306,7 @@ async function loadData() {
 
 
     // --------------------------------------------------
-    // RUBSHORT → LAB
+    // RUBSHORT → HIERARCHY / LABEL
     // --------------------------------------------------
 
     const rubshortBuffer =
@@ -699,18 +699,6 @@ function getPointsControle(rubriqueId) {
 // --------------------------------------------------
 // 17. CALCULER LE RUBSHORT D'UNE RUBRIQUE
 // --------------------------------------------------
-//
-// Règle métier :
-//
-// si l'identifiant commence par 01 ou 02
-// → rubshort = identifiant complet
-//
-// sinon
-// → supprimer tout ce qui suit le dernier "_"
-//
-// Exemple :
-// 07.01_2023 → 07.01
-// --------------------------------------------------
 
 function getRubshort(rubriqueId) {
 
@@ -735,7 +723,7 @@ function getRubshort(rubriqueId) {
 
 
 // --------------------------------------------------
-// 18. RÉCUPÉRER LES LABS ASSOCIÉS À UNE RUBRIQUE
+// 18. RÉCUPÉRER LES HIERARCHY/LABEL ASSOCIÉS
 // --------------------------------------------------
 
 function getLabsForRubrique(rubriqueId) {
@@ -753,10 +741,26 @@ function getLabsForRubrique(rubriqueId) {
 
         .map(row => {
 
-            return String(row["lab"]).trim();
+            return {
+                hierarchy:
+                    String(
+                        row["hierarchy"] ?? ""
+                    ).trim(),
+
+                label:
+                    String(
+                        row["label"] ?? ""
+                    ).trim()
+            };
         })
 
-        .filter(lab => lab !== "");
+        .filter(item => {
+
+            return (
+                item.hierarchy !== "" ||
+                item.label !== ""
+            );
+        });
 }
 
 
@@ -861,8 +865,13 @@ function showLabsPopup(rubriqueId) {
                 ${
                     labs
                         .map(
-                            lab =>
-                                `<li>${escapeHTML(lab)}</li>`
+                            item => `
+                                <li>
+                                    <u>${escapeHTML(item.hierarchy)}</u>
+                                    :
+                                    ${escapeHTML(item.label)}
+                                </li>
+                            `
                         )
                         .join("")
                 }
@@ -1258,7 +1267,7 @@ async function startApp() {
                 <li>data/dependances.csv</li>
                 <li>data/labels.csv</li>
                 <li>data/tous_les_PC.xlsx</li>
-                <li>data/rubshort2lab_edited.xlsx</li>
+                <li>data/rubshort2lab_edited_v2.xlsx</li>
             </ul>
         `;
     }
