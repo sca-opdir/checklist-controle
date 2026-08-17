@@ -75,6 +75,9 @@ const previousButton =
 const progressBar =
     document.getElementById("progressBar");
 
+const introText =
+    document.getElementById("introText");
+
 
 // --------------------------------------------------
 // 5. LECTURE D'UN CSV
@@ -423,7 +426,6 @@ function isOptionAvailable(optionId) {
         getAllSelected();
 
     return dependency.any.some(
-
         condition =>
             allSelected.includes(condition)
     );
@@ -455,6 +457,12 @@ function removeUnavailableAnswers() {
 function renderStep() {
 
     showingResults = false;
+
+    // Le texte d'introduction doit être visible
+    // pendant le questionnaire.
+    if (introText) {
+        introText.style.display = "block";
+    }
 
     removeUnavailableAnswers();
 
@@ -705,15 +713,9 @@ function getRubshort(rubriqueId) {
     const id =
         String(rubriqueId).trim();
 
-
-    // Cas particuliers 01 et 02
-
     if (/^(01|02)/.test(id)) {
         return id;
     }
-
-
-    // Suppression du dernier "_" et de ce qui suit
 
     return id.replace(
         /_[^_]+$/,
@@ -730,7 +732,6 @@ function getLabsForRubrique(rubriqueId) {
 
     const rubshort =
         getRubshort(rubriqueId);
-
 
     return rubshort2lab
         .filter(row => {
@@ -846,9 +847,7 @@ function showLabsPopup(rubriqueId) {
                 item.id === rubriqueId
         );
 
-
     let contenuLabs = "";
-
 
     if (labs.length === 0) {
 
@@ -879,13 +878,11 @@ function showLabsPopup(rubriqueId) {
         `;
     }
 
-
     const popup =
         document.createElement("div");
 
     popup.className =
         "labs-popup-overlay";
-
 
     popup.innerHTML = `
         <div class="labs-popup">
@@ -916,7 +913,6 @@ function showLabsPopup(rubriqueId) {
 
         </div>
     `;
-
 
     document.body.appendChild(
         popup
@@ -973,7 +969,6 @@ function showLabsPopup(rubriqueId) {
             }
         };
 
-
     document.addEventListener(
         "keydown",
         closeWithEscape
@@ -988,6 +983,12 @@ function showLabsPopup(rubriqueId) {
 function showResults() {
 
     showingResults = true;
+
+    // Masquer le texte d'introduction
+    // sur la page des résultats.
+    if (introText) {
+        introText.style.display = "none";
+    }
 
     removeUnavailableAnswers();
 
@@ -1041,11 +1042,6 @@ function showResults() {
 
     results.forEach(rubrique => {
 
-
-        // --------------------------------------------------
-        // ÉLÉMENTS À PRÉPARER
-        // --------------------------------------------------
-
         const listeControles =
             getControles(
                 rubrique.id
@@ -1064,10 +1060,6 @@ function showResults() {
                 : "<li>Aucun contrôle défini</li>";
 
 
-        // --------------------------------------------------
-        // POINTS DE CONTRÔLE
-        // --------------------------------------------------
-
         const points =
             getPointsControle(
                 rubrique.id
@@ -1078,10 +1070,6 @@ function showResults() {
                 rubrique.id
             );
 
-
-        // --------------------------------------------------
-        // AFFICHAGE
-        // --------------------------------------------------
 
         questionnaire.innerHTML += `
             <div class="result">
@@ -1141,7 +1129,6 @@ function showResults() {
         questionnaire.querySelectorAll(
             ".labs-button"
         );
-
 
     labsButtons.forEach(button => {
 
