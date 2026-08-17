@@ -34,13 +34,14 @@ const categories = [
 
 
 // --------------------------------------------------
-// 2. DONNÉES CHARGÉES DEPUIS LES CSV
+// 2. DONNÉES CHARGÉES DEPUIS LES FICHIERS
 // --------------------------------------------------
 
 let rubriques = [];
 let controles = [];
 let dependencies = {};
 let labels = {};
+let pointsControle = [];
 
 
 // --------------------------------------------------
@@ -107,7 +108,7 @@ function parseCSV(text) {
 
 
 // --------------------------------------------------
-// 6. CHARGEMENT DES FICHIERS CSV
+// 6. CHARGEMENT DES FICHIERS
 // --------------------------------------------------
 
 async function loadData() {
@@ -116,13 +117,15 @@ async function loadData() {
         rubriquesResponse,
         controlesResponse,
         dependancesResponse,
-        labelsResponse
+        labelsResponse,
+        pointsControleResponse
     ] = await Promise.all([
 
         fetch("./data/rubriques.csv"),
         fetch("./data/controles.csv"),
         fetch("./data/dependances.csv"),
-        fetch("./data/labels.csv")
+        fetch("./data/labels.csv"),
+        fetch("./data/tous_les_PC.xlsx")
     ]);
 
 
@@ -154,9 +157,15 @@ async function loadData() {
         );
     }
 
+    if (!pointsControleResponse.ok) {
+        throw new Error(
+            "Impossible de charger tous_les_PC.xlsx"
+        );
+    }
+
 
     // --------------------------------------------------
-    // LECTURE
+    // LECTURE DES CSV
     // --------------------------------------------------
 
     const rubriquesText =
@@ -174,14 +183,6 @@ async function loadData() {
 
     // --------------------------------------------------
     // LABELS
-    // --------------------------------------------------
-    //
-    // Exemple :
-    //
-    // id;label;groupe
-    // UGB_bovins;UGB bovins;betail
-    // bilan_fourrager;Bilan fourrager;contrôle
-    //
     // --------------------------------------------------
 
     const labelsRows =
@@ -201,20 +202,9 @@ async function loadData() {
 
     // --------------------------------------------------
     // RUBRIQUES
-    // --------------------------------------------------
     //
-    // Exemple :
-    //
-    // 07.06;...;saison;été
-    // 07.06;...;cultures;terres_assolées
-    // 07.06;...;cultures;baies
-    //
-    // signifie :
-    //
-    // été
-    // ET
-    // (terres_assolées OU baies)
-    //
+    // ENTRE LES GROUPES = ET
+    // DANS UN GROUPE = OU
     // --------------------------------------------------
 
     const rubriquesRows =
@@ -262,19 +252,6 @@ async function loadData() {
     // --------------------------------------------------
     // DÉPENDANCES
     // --------------------------------------------------
-    //
-    // Plusieurs lignes pour une même option = OU
-    //
-    // Exemple :
-    //
-    // insc_PLVH;UGB_bovins
-    // insc_PLVH;UGB_équidés
-    //
-    // =
-    //
-    // UGB_bovins OU UGB_équidés
-    //
-    // --------------------------------------------------
 
     const dependancesRows =
         parseCSV(dependancesText);
@@ -294,6 +271,40 @@ async function loadData() {
             .any
             .push(row.condition);
     });
+
+
+    // --------------------------------------------------
+    // POINTS DE CONTRÔLE DEPUIS LE FICHIER XLSX
+    // --------------------------------------------------
+
+    const excelBuffer =
+        await pointsControleResponse.arrayBuffer();
+
+    const workbook =
+        XLSX.read(excelBuffer, {
+            type: "array"
+        });
+
+
+    // On prend la première feuille du classeur.
+
+    const firstSheetName =
+        workbook.SheetNames[0];
+
+    const worksheet =
+        workbook.Sheets[firstSheetName];
+
+
+    // Transformation de la feuille Excel
+    // en tableau d'objets JavaScript.
+
+    pointsControle =
+        XLSX.utils.sheet_to_json(
+            worksheet,
+            {
+                defval: ""
+            }
+        );
 }
 
 
@@ -345,7 +356,6 @@ function getAllSelected() {
 //
 // si saison = hiver,
 // on ne montre pas l'étape cultures.
-//
 // --------------------------------------------------
 
 function getVisibleCategories() {
@@ -387,9 +397,6 @@ function isOptionAvailable(optionId) {
         dependencies[optionId];
 
 
-    // Pas de dépendance :
-    // l'option est disponible.
-
     if (!dependency) {
         return true;
     }
@@ -398,8 +405,6 @@ function isOptionAvailable(optionId) {
     const allSelected =
         getAllSelected();
 
-
-    // Au moins une condition doit être remplie.
 
     return dependency.any.some(
 
@@ -443,8 +448,6 @@ function renderStep() {
         getVisibleCategories();
 
 
-    // Sécurité si le nombre d'étapes change.
-
     if (
         currentStep >=
         visibleCategories.length
@@ -479,9 +482,6 @@ function renderStep() {
 
     options.forEach(optionId => {
 
-
-        // Ne pas afficher les options
-        // dont les dépendances ne sont pas remplies.
 
         if (!isOptionAvailable(optionId)) {
             return;
@@ -631,18 +631,7 @@ function renderStep() {
 // --------------------------------------------------
 //
 // ENTRE LES GROUPES = ET
-//
 // DANS UN GROUPE = OU
-//
-// Exemple :
-//
-// saison = été
-//
-// ET
-//
-// cultures =
-// terres_assolées OU baies
-//
 // --------------------------------------------------
 
 function rubriqueApplicable(rubrique) {
@@ -697,7 +686,97 @@ function getControles(rubriqueId) {
 
 
 // --------------------------------------------------
-// 16. AFFICHAGE DES RÉSULTATS
+// 16. RÉCUPÉRER LES POINTS DE CONTRÔLE
+//     D'UNE RUBRIQUE
+// --------------------------------------------------
+
+function getPointsControle(rubriqueId) {
+
+    return pointsControle.filter(row => {
+
+        return String(row["id.rubrique"]).trim()
+            === String(rubriqueId).trim();
+    });
+}
+
+
+// --------------------------------------------------
+// 17. ÉCHAPPER LE HTML
+// --------------------------------------------------
+//
+// Evite qu'un texte provenant du fichier Excel
+// soit interprété comme du HTML.
+// --------------------------------------------------
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+// --------------------------------------------------
+// 18. CRÉER LE CONTENU DE L'ACCORDÉON
+// --------------------------------------------------
+
+function getPointsControleHTML(rubriqueId) {
+
+    const lignes =
+        getPointsControle(rubriqueId);
+
+
+    if (lignes.length === 0) {
+
+        return `
+            <p>
+                Aucun point de contrôle disponible.
+            </p>
+        `;
+    }
+
+
+    const liste =
+        lignes
+            .map(row => {
+
+                const idPc =
+                    escapeHTML(row["id.pc"]);
+
+                const pcShort =
+                    escapeHTML(row["pc_short"]);
+
+                const pc =
+                    escapeHTML(row["pc"]);
+
+
+                return `
+                    <li>
+                        <u>
+                            ${idPc}. ${pcShort}
+                        </u>
+                        :
+                        <br>
+                        ${pc}
+                    </li>
+                `;
+            })
+            .join("");
+
+
+    return `
+        <ul class="pc-list">
+            ${liste}
+        </ul>
+    `;
+}
+
+
+// --------------------------------------------------
+// 19. AFFICHAGE DES RÉSULTATS
 // --------------------------------------------------
 
 function showResults() {
@@ -769,20 +848,6 @@ function showResults() {
             );
 
 
-        // --------------------------------------------------
-        // IMPORTANT :
-        //
-        // controles.csv contient les IDs.
-        //
-        // Exemple :
-        //
-        // bilan_fourrager
-        //
-        // On utilise getLabel() pour afficher :
-        //
-        // Bilan fourrager
-        // --------------------------------------------------
-
         const controlesHTML =
             listeControles.length > 0
 
@@ -796,6 +861,24 @@ function showResults() {
 
                 : "<li>Aucun contrôle défini</li>";
 
+
+        // --------------------------------------------------
+        // POINTS DE CONTRÔLE
+        // --------------------------------------------------
+
+        const points =
+            getPointsControle(rubrique.id);
+
+
+        const pointsControleHTML =
+            getPointsControleHTML(
+                rubrique.id
+            );
+
+
+        // --------------------------------------------------
+        // RUBRIQUE
+        // --------------------------------------------------
 
         questionnaire.innerHTML += `
             <div class="result">
@@ -814,6 +897,22 @@ function showResults() {
                     ${controlesHTML}
                 </ul>
 
+
+                <details class="pc-accordion">
+
+                    <summary>
+                        Voir les points de contrôle
+                        (${points.length})
+                    </summary>
+
+                    <div class="pc-content">
+
+                        ${pointsControleHTML}
+
+                    </div>
+
+                </details>
+
             </div>
         `;
     });
@@ -821,7 +920,7 @@ function showResults() {
 
 
 // --------------------------------------------------
-// 17. BOUTON SUIVANT
+// 20. BOUTON SUIVANT
 // --------------------------------------------------
 
 nextButton.addEventListener(
@@ -851,7 +950,7 @@ nextButton.addEventListener(
 
 
 // --------------------------------------------------
-// 18. BOUTON PRÉCÉDENT
+// 21. BOUTON PRÉCÉDENT
 // --------------------------------------------------
 
 previousButton.addEventListener(
@@ -898,7 +997,7 @@ previousButton.addEventListener(
 
 
 // --------------------------------------------------
-// 19. DÉMARRAGE
+// 22. DÉMARRAGE
 // --------------------------------------------------
 
 async function startApp() {
@@ -943,6 +1042,7 @@ async function startApp() {
                 <li>data/controles.csv</li>
                 <li>data/dependances.csv</li>
                 <li>data/labels.csv</li>
+                <li>data/tous_les_PC.xlsx</li>
             </ul>
         `;
     }
@@ -950,7 +1050,7 @@ async function startApp() {
 
 
 // --------------------------------------------------
-// 20. LANCEMENT
+// 23. LANCEMENT
 // --------------------------------------------------
 
 startApp();
