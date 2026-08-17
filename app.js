@@ -42,6 +42,7 @@ let controles = [];
 let dependencies = {};
 let labels = {};
 let pointsControle = [];
+let rubshort2lab = [];
 
 
 // --------------------------------------------------
@@ -97,7 +98,6 @@ function parseCSV(text) {
         const row = {};
 
         headers.forEach((header, index) => {
-
             row[header] =
                 (values[index] ?? "").trim();
         });
@@ -118,14 +118,16 @@ async function loadData() {
         controlesResponse,
         dependancesResponse,
         labelsResponse,
-        pointsControleResponse
+        pointsControleResponse,
+        rubshort2labResponse
     ] = await Promise.all([
 
         fetch("./data/rubriques.csv"),
         fetch("./data/controles.csv"),
         fetch("./data/dependances.csv"),
         fetch("./data/labels.csv"),
-        fetch("./data/tous_les_PC.xlsx")
+        fetch("./data/tous_les_PC.xlsx"),
+        fetch("./data/rubshort2lab_edited.xlsx")
     ]);
 
 
@@ -160,6 +162,12 @@ async function loadData() {
     if (!pointsControleResponse.ok) {
         throw new Error(
             "Impossible de charger tous_les_PC.xlsx"
+        );
+    }
+
+    if (!rubshort2labResponse.ok) {
+        throw new Error(
+            "Impossible de charger rubshort2lab_edited.xlsx"
         );
     }
 
@@ -202,9 +210,6 @@ async function loadData() {
 
     // --------------------------------------------------
     // RUBRIQUES
-    //
-    // ENTRE LES GROUPES = ET
-    // DANS UN GROUPE = OU
     // --------------------------------------------------
 
     const rubriquesRows =
@@ -274,7 +279,7 @@ async function loadData() {
 
 
     // --------------------------------------------------
-    // POINTS DE CONTRÔLE DEPUIS LE FICHIER XLSX
+    // POINTS DE CONTRÔLE
     // --------------------------------------------------
 
     const excelBuffer =
@@ -285,21 +290,47 @@ async function loadData() {
             type: "array"
         });
 
-
-    // Première feuille du classeur Excel
-
     const firstSheetName =
         workbook.SheetNames[0];
 
     const worksheet =
         workbook.Sheets[firstSheetName];
 
-
-    // Transformation en objets JavaScript
-
     pointsControle =
         XLSX.utils.sheet_to_json(
             worksheet,
+            {
+                defval: ""
+            }
+        );
+
+
+    // --------------------------------------------------
+    // RUBSHORT → LAB
+    // --------------------------------------------------
+
+    const rubshortBuffer =
+        await rubshort2labResponse.arrayBuffer();
+
+    const rubshortWorkbook =
+        XLSX.read(
+            rubshortBuffer,
+            {
+                type: "array"
+            }
+        );
+
+    const rubshortSheetName =
+        rubshortWorkbook.SheetNames[0];
+
+    const rubshortWorksheet =
+        rubshortWorkbook.Sheets[
+            rubshortSheetName
+        ];
+
+    rubshort2lab =
+        XLSX.utils.sheet_to_json(
+            rubshortWorksheet,
             {
                 defval: ""
             }
@@ -350,26 +381,15 @@ function getAllSelected() {
 // --------------------------------------------------
 // 10. CALCULER LES CATÉGORIES VISIBLES
 // --------------------------------------------------
-//
-// Particularité métier :
-//
-// si saison = hiver,
-// on ne montre pas l'étape cultures.
-// --------------------------------------------------
 
 function getVisibleCategories() {
 
     const hiver =
         answers.saison.includes("hiver");
 
-
-    // Effacer les anciennes cultures
-    // si l'utilisateur passe de été à hiver.
-
     if (hiver) {
         answers.cultures = [];
     }
-
 
     return categories.filter(category => {
 
@@ -395,20 +415,12 @@ function isOptionAvailable(optionId) {
     const dependency =
         dependencies[optionId];
 
-
-    // Pas de dépendance :
-    // l'option est disponible.
-
     if (!dependency) {
         return true;
     }
 
-
     const allSelected =
         getAllSelected();
-
-
-    // Au moins une condition doit être remplie.
 
     return dependency.any.some(
 
@@ -444,15 +456,10 @@ function renderStep() {
 
     showingResults = false;
 
-
     removeUnavailableAnswers();
-
 
     const visibleCategories =
         getVisibleCategories();
-
-
-    // Sécurité si le nombre d'étapes change.
 
     if (
         currentStep >=
@@ -463,14 +470,11 @@ function renderStep() {
             visibleCategories.length - 1;
     }
 
-
     nextButton.style.display =
         "block";
 
-
     const category =
         visibleCategories[currentStep];
-
 
     questionnaire.innerHTML = `
         <h2>${category.titre}</h2>
@@ -485,17 +489,11 @@ function renderStep() {
     const options =
         getOptionsForGroup(category.id);
 
-
     options.forEach(optionId => {
-
-
-        // Ne pas afficher les options
-        // dont les dépendances ne sont pas remplies.
 
         if (!isOptionAvailable(optionId)) {
             return;
         }
-
 
         const checked =
             answers[category.id]
@@ -504,13 +502,11 @@ function renderStep() {
                 ? "checked"
                 : "";
 
-
         const inputType =
             category.selection === "single"
 
                 ? "radio"
                 : "checkbox";
-
 
         questionnaire.innerHTML += `
             <label class="option">
@@ -535,7 +531,6 @@ function renderStep() {
 
     const inputs =
         questionnaire.querySelectorAll("input");
-
 
     inputs.forEach(input => {
 
@@ -629,7 +624,6 @@ function renderStep() {
         )
         * 100;
 
-
     progressBar.style.width =
         progress + "%";
 }
@@ -638,23 +632,16 @@ function renderStep() {
 // --------------------------------------------------
 // 14. VÉRIFIER SI UNE RUBRIQUE EST APPLICABLE
 // --------------------------------------------------
-//
-// ENTRE LES GROUPES = ET
-//
-// DANS UN GROUPE = OU
-// --------------------------------------------------
 
 function rubriqueApplicable(rubrique) {
 
     const allSelected =
         getAllSelected();
 
-
     const groupes =
         Object.values(
             rubrique.conditions
         );
-
 
     return groupes.every(
 
@@ -697,7 +684,6 @@ function getControles(rubriqueId) {
 
 // --------------------------------------------------
 // 16. RÉCUPÉRER LES POINTS DE CONTRÔLE
-//     D'UNE RUBRIQUE
 // --------------------------------------------------
 
 function getPointsControle(rubriqueId) {
@@ -711,7 +697,71 @@ function getPointsControle(rubriqueId) {
 
 
 // --------------------------------------------------
-// 17. ÉCHAPPER LE HTML
+// 17. CALCULER LE RUBSHORT D'UNE RUBRIQUE
+// --------------------------------------------------
+//
+// Règle métier :
+//
+// si l'identifiant commence par 01 ou 02
+// → rubshort = identifiant complet
+//
+// sinon
+// → supprimer tout ce qui suit le dernier "_"
+//
+// Exemple :
+// 07.01_2023 → 07.01
+// --------------------------------------------------
+
+function getRubshort(rubriqueId) {
+
+    const id =
+        String(rubriqueId).trim();
+
+
+    // Cas particuliers 01 et 02
+
+    if (/^(01|02)/.test(id)) {
+        return id;
+    }
+
+
+    // Suppression du dernier "_" et de ce qui suit
+
+    return id.replace(
+        /_[^_]+$/,
+        ""
+    );
+}
+
+
+// --------------------------------------------------
+// 18. RÉCUPÉRER LES LABS ASSOCIÉS À UNE RUBRIQUE
+// --------------------------------------------------
+
+function getLabsForRubrique(rubriqueId) {
+
+    const rubshort =
+        getRubshort(rubriqueId);
+
+
+    return rubshort2lab
+        .filter(row => {
+
+            return String(row["rubshort"]).trim()
+                === rubshort;
+        })
+
+        .map(row => {
+
+            return String(row["lab"]).trim();
+        })
+
+        .filter(lab => lab !== "");
+}
+
+
+// --------------------------------------------------
+// 19. ÉCHAPPER LE HTML
 // --------------------------------------------------
 
 function escapeHTML(value) {
@@ -726,14 +776,13 @@ function escapeHTML(value) {
 
 
 // --------------------------------------------------
-// 18. CRÉER LE CONTENU DE L'ACCORDÉON
+// 20. CRÉER LE CONTENU DE L'ACCORDÉON
 // --------------------------------------------------
 
 function getPointsControleHTML(rubriqueId) {
 
     const lignes =
         getPointsControle(rubriqueId);
-
 
     if (lignes.length === 0) {
 
@@ -743,7 +792,6 @@ function getPointsControleHTML(rubriqueId) {
             </p>
         `;
     }
-
 
     const liste =
         lignes
@@ -758,7 +806,6 @@ function getPointsControleHTML(rubriqueId) {
                 const pc =
                     escapeHTML(row["pc"]);
 
-
                 return `
                     <li>
                         <u>
@@ -772,7 +819,6 @@ function getPointsControleHTML(rubriqueId) {
             })
             .join("");
 
-
     return `
         <ul class="pc-list">
             ${liste}
@@ -782,36 +828,175 @@ function getPointsControleHTML(rubriqueId) {
 
 
 // --------------------------------------------------
-// 19. AFFICHAGE DES RÉSULTATS
+// 21. AFFICHER LA POP-UP DES LABELS
+// --------------------------------------------------
+
+function showLabsPopup(rubriqueId) {
+
+    const labs =
+        getLabsForRubrique(rubriqueId);
+
+    const rubrique =
+        rubriques.find(
+            item =>
+                item.id === rubriqueId
+        );
+
+
+    let contenuLabs = "";
+
+
+    if (labs.length === 0) {
+
+        contenuLabs = `
+            <p>
+                Aucun label associé à cette rubrique.
+            </p>
+        `;
+
+    } else {
+
+        contenuLabs = `
+            <ul>
+                ${
+                    labs
+                        .map(
+                            lab =>
+                                `<li>${escapeHTML(lab)}</li>`
+                        )
+                        .join("")
+                }
+            </ul>
+        `;
+    }
+
+
+    const popup =
+        document.createElement("div");
+
+    popup.className =
+        "labs-popup-overlay";
+
+
+    popup.innerHTML = `
+        <div class="labs-popup">
+
+            <button
+                type="button"
+                class="labs-popup-close"
+                aria-label="Fermer"
+            >
+                ×
+            </button>
+
+            <h3>
+                ${escapeHTML(rubriqueId)}
+                —
+                ${escapeHTML(
+                    rubrique?.label ?? ""
+                )}
+            </h3>
+
+            <p>
+                <strong>
+                    PC des labels associés à cette rubrique
+                </strong>
+            </p>
+
+            ${contenuLabs}
+
+        </div>
+    `;
+
+
+    document.body.appendChild(
+        popup
+    );
+
+
+    // --------------------------------------------------
+    // FERMETURE AVEC LE BOUTON ×
+    // --------------------------------------------------
+
+    const closeButton =
+        popup.querySelector(
+            ".labs-popup-close"
+        );
+
+    closeButton.addEventListener(
+        "click",
+        () => {
+            popup.remove();
+        }
+    );
+
+
+    // --------------------------------------------------
+    // FERMETURE SI CLIC SUR LE FOND
+    // --------------------------------------------------
+
+    popup.addEventListener(
+        "click",
+        event => {
+
+            if (event.target === popup) {
+                popup.remove();
+            }
+        }
+    );
+
+
+    // --------------------------------------------------
+    // FERMETURE AVEC ÉCHAP
+    // --------------------------------------------------
+
+    const closeWithEscape =
+        event => {
+
+            if (event.key === "Escape") {
+
+                popup.remove();
+
+                document.removeEventListener(
+                    "keydown",
+                    closeWithEscape
+                );
+            }
+        };
+
+
+    document.addEventListener(
+        "keydown",
+        closeWithEscape
+    );
+}
+
+
+// --------------------------------------------------
+// 22. AFFICHAGE DES RÉSULTATS
 // --------------------------------------------------
 
 function showResults() {
 
     showingResults = true;
 
-
     removeUnavailableAnswers();
 
     getVisibleCategories();
 
-
     previousButton.style.visibility =
         "visible";
 
-
     nextButton.style.display =
         "none";
-
 
     const results =
         rubriques.filter(
             rubriqueApplicable
         );
 
-
     progressBar.style.width =
         "100%";
-
 
     questionnaire.innerHTML = `
         <h2>Rubriques applicables</h2>
@@ -857,13 +1042,11 @@ function showResults() {
                 rubrique.id
             );
 
-
         const controlesHTML =
             listeControles.length > 0
 
                 ? listeControles
                     .map(
-
                         controleId =>
                             `<li>${getLabel(controleId)}</li>`
                     )
@@ -881,7 +1064,6 @@ function showResults() {
                 rubrique.id
             );
 
-
         const pointsControleHTML =
             getPointsControleHTML(
                 rubrique.id
@@ -889,17 +1071,29 @@ function showResults() {
 
 
         // --------------------------------------------------
-        // AFFICHAGE DE LA RUBRIQUE
+        // AFFICHAGE
         // --------------------------------------------------
 
         questionnaire.innerHTML += `
             <div class="result">
 
-                <h3>
-                    ${rubrique.id}
-                    —
-                    ${rubrique.label}
-                </h3>
+                <div class="result-title-row">
+
+                    <h3>
+                        ${rubrique.id}
+                        —
+                        ${rubrique.label}
+                    </h3>
+
+                    <button
+                        type="button"
+                        class="labs-button"
+                        data-rubrique-id="${rubrique.id}"
+                    >
+                        PC des labels associés à cette rubrique
+                    </button>
+
+                </div>
 
                 <strong>
                     A préparer :
@@ -928,11 +1122,38 @@ function showResults() {
             </div>
         `;
     });
+
+
+    // --------------------------------------------------
+    // BOUTONS DES POP-UPS
+    // --------------------------------------------------
+
+    const labsButtons =
+        questionnaire.querySelectorAll(
+            ".labs-button"
+        );
+
+
+    labsButtons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const rubriqueId =
+                    button.dataset.rubriqueId;
+
+                showLabsPopup(
+                    rubriqueId
+                );
+            }
+        );
+    });
 }
 
 
 // --------------------------------------------------
-// 20. BOUTON SUIVANT
+// 23. BOUTON SUIVANT
 // --------------------------------------------------
 
 nextButton.addEventListener(
@@ -942,7 +1163,6 @@ nextButton.addEventListener(
 
         const visibleCategories =
             getVisibleCategories();
-
 
         if (
             currentStep <
@@ -962,7 +1182,7 @@ nextButton.addEventListener(
 
 
 // --------------------------------------------------
-// 21. BOUTON PRÉCÉDENT
+// 24. BOUTON PRÉCÉDENT
 // --------------------------------------------------
 
 previousButton.addEventListener(
@@ -970,33 +1190,20 @@ previousButton.addEventListener(
 
     () => {
 
-
-        // --------------------------------------------------
-        // RETOUR DEPUIS LES RÉSULTATS
-        // --------------------------------------------------
-
         if (showingResults) {
 
             showingResults = false;
 
-
             const visibleCategories =
                 getVisibleCategories();
 
-
             currentStep =
                 visibleCategories.length - 1;
-
 
             renderStep();
 
             return;
         }
-
-
-        // --------------------------------------------------
-        // RETOUR NORMAL
-        // --------------------------------------------------
 
         if (currentStep > 0) {
 
@@ -1009,7 +1216,7 @@ previousButton.addEventListener(
 
 
 // --------------------------------------------------
-// 22. DÉMARRAGE
+// 25. DÉMARRAGE
 // --------------------------------------------------
 
 async function startApp() {
@@ -1017,14 +1224,11 @@ async function startApp() {
     questionnaire.innerHTML =
         "<p>Chargement des données...</p>";
 
-
     nextButton.style.display =
         "none";
 
-
     previousButton.style.visibility =
         "hidden";
-
 
     try {
 
@@ -1035,7 +1239,6 @@ async function startApp() {
     } catch (error) {
 
         console.error(error);
-
 
         questionnaire.innerHTML = `
             <h2>Erreur</h2>
@@ -1055,6 +1258,7 @@ async function startApp() {
                 <li>data/dependances.csv</li>
                 <li>data/labels.csv</li>
                 <li>data/tous_les_PC.xlsx</li>
+                <li>data/rubshort2lab_edited.xlsx</li>
             </ul>
         `;
     }
@@ -1062,7 +1266,7 @@ async function startApp() {
 
 
 // --------------------------------------------------
-// 23. LANCEMENT
+// 26. LANCEMENT
 // --------------------------------------------------
 
 startApp();
