@@ -286,7 +286,7 @@ async function loadData() {
         });
 
 
-    // On prend la première feuille du classeur.
+    // Première feuille du classeur Excel
 
     const firstSheetName =
         workbook.SheetNames[0];
@@ -295,8 +295,7 @@ async function loadData() {
         workbook.Sheets[firstSheetName];
 
 
-    // Transformation de la feuille Excel
-    // en tableau d'objets JavaScript.
+    // Transformation en objets JavaScript
 
     pointsControle =
         XLSX.utils.sheet_to_json(
@@ -397,6 +396,9 @@ function isOptionAvailable(optionId) {
         dependencies[optionId];
 
 
+    // Pas de dépendance :
+    // l'option est disponible.
+
     if (!dependency) {
         return true;
     }
@@ -405,6 +407,8 @@ function isOptionAvailable(optionId) {
     const allSelected =
         getAllSelected();
 
+
+    // Au moins une condition doit être remplie.
 
     return dependency.any.some(
 
@@ -448,6 +452,8 @@ function renderStep() {
         getVisibleCategories();
 
 
+    // Sécurité si le nombre d'étapes change.
+
     if (
         currentStep >=
         visibleCategories.length
@@ -482,6 +488,9 @@ function renderStep() {
 
     options.forEach(optionId => {
 
+
+        // Ne pas afficher les options
+        // dont les dépendances ne sont pas remplies.
 
         if (!isOptionAvailable(optionId)) {
             return;
@@ -631,6 +640,7 @@ function renderStep() {
 // --------------------------------------------------
 //
 // ENTRE LES GROUPES = ET
+//
 // DANS UN GROUPE = OU
 // --------------------------------------------------
 
@@ -702,10 +712,6 @@ function getPointsControle(rubriqueId) {
 
 // --------------------------------------------------
 // 17. ÉCHAPPER LE HTML
-// --------------------------------------------------
-//
-// Evite qu'un texte provenant du fichier Excel
-// soit interprété comme du HTML.
 // --------------------------------------------------
 
 function escapeHTML(value) {
@@ -842,6 +848,10 @@ function showResults() {
     results.forEach(rubrique => {
 
 
+        // --------------------------------------------------
+        // ÉLÉMENTS À PRÉPARER
+        // --------------------------------------------------
+
         const listeControles =
             getControles(
                 rubrique.id
@@ -867,7 +877,9 @@ function showResults() {
         // --------------------------------------------------
 
         const points =
-            getPointsControle(rubrique.id);
+            getPointsControle(
+                rubrique.id
+            );
 
 
         const pointsControleHTML =
@@ -877,7 +889,7 @@ function showResults() {
 
 
         // --------------------------------------------------
-        // RUBRIQUE
+        // AFFICHAGE DE LA RUBRIQUE
         // --------------------------------------------------
 
         questionnaire.innerHTML += `
