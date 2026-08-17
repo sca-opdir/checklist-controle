@@ -100,3 +100,21 @@ button {
 .control-list {
     margin-bottom: 0;
 }
+
+.pc-accordion {
+    margin-top: 20px;
+}
+
+.pc-accordion summary {
+    color: #0066cc;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.pc-content {
+    margin-top: 12px;
+}
+
+.pc-list li {
+    margin-bottom: 14px;
+}
