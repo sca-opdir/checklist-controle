@@ -807,7 +807,7 @@ function showResults() {
                 </h3>
 
                 <strong>
-                    Contrôles :
+                    A préparer :
                 </strong>
 
                 <ul class="control-list">
