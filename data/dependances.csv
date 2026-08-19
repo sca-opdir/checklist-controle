@@ -4,6 +4,8 @@ insc_PLVH;UGB_équidés
 insc_PLVH;UGB_caprins
 insc_PLVH;UGB_ovins
 insc_PLVH;UGB_autresFG
+insc_PLVH;herbages
+insc_PLVH;SPB_herbages
 insc_SST_Bovins;UGB_bovins
 insc_SST_Equidés;UGB_équidés
 insc_SST_Chèvres;UGB_caprins
