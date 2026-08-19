@@ -117,6 +117,7 @@ id;label;groupe;condition
 07.13_2025;PER ruissellement et dérive;cultures;herbages
 09.02_2018;Production végétale bio;cultures;herbages
 09.03_2017;Semences et plants bio;cultures;herbages
+11.01_2021;Production de lait et de viande basée sur les herbages;cultures;herbages
 20.01_2021;Protection des eaux;cultures;herbages
 30.01_2024;Protection de l'air;cultures;herbages
 01.1.A_2021;Hygiène production végétale - Exigences générales;cultures;cultures_pérennes
@@ -192,6 +193,7 @@ id;label;groupe;condition
 08.07_2021;QI G - prairies riveraines d'un cours d'eau d'un cours d'eau;cultures;SPB_herbages
 09.02_2018;Production végétale bio;cultures;SPB_herbages
 09.03_2017;Semences et plants bio;cultures;SPB_herbages
+11.01_2021;Production de lait et de viande basée sur les herbages;cultures;SPB_herbages
 07.01_2023;PER Généralités;cultures;SPB_pérennes
 07.02_2024;PER Documents / enregistrements;cultures;SPB_pérennes
 07.03_2025;PER Part appropriée de surface de promotion de la biodiversité;cultures;SPB_pérennes
@@ -318,6 +320,7 @@ id;label;groupe;condition
 03.60_v1;Interventions entrainant des douleurs;bétail;UGB_autresFG
 09.07_2017;Garde des animaux / Élevage bio: généralités;bétail;UGB_autresFG
 09.10_2017;Elevage bio ' exigences spécifiques pour les autres espèces animales;bétail;UGB_autresFG
+11.01_2021;Production de lait et de viande basée sur les herbages;bétail;UGB_autresFG
 12.26_2025;SRPA Animaux sauvages;bétail;UGB_autresFG
 20.01_2021;Protection des eaux;bétail;UGB_autresFG
 01.2_v4;Hygiène de la production primaire animale;bétail;UB_autresNFG
